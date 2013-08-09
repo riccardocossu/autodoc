@@ -1,0 +1,124 @@
+import org.gradle.api.artifacts.maven.MavenDeployment
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'maven'
+apply plugin: 'signing'
+
+sourceCompatibility = 1.5
+group = 'net.riccardocossu.autodoc'
+version = '0.1.0-SNAPSHOT'
+
+def isDevBuild
+def isCiBuild
+def isReleaseBuild
+
+def sonatypeRepositoryUrl
+
+//set build variables based on build type (release, continuous integration, development)
+if(hasProperty("release")) {
+	isReleaseBuild = true
+	sonatypeRepositoryUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+} else if (hasProperty("ci")) {
+	isCiBuild = true
+	version += "-SNAPSHOT"
+	sonatypeRepositoryUrl = "https://oss.sonatype.org/content/repositories/snapshots/"
+} else {
+	isDevBuild = true
+}
+
+jar {
+    manifest {
+        attributes 'Implementation-Title': 'autodoc-base', 'Implementation-Version': version
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile group: 'commons-configuration', name: 'commons-configuration', version: '1.9'
+    testCompile group: 'junit', name: 'junit', version: '4.+'
+}
+
+test {
+    systemProperties 'property': 'value'
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+	classifier = 'javadoc'
+	from 'build/docs/javadoc'
+}
+ 
+task sourcesJar(type: Jar) {
+	from sourceSets.main.allSource
+	classifier = 'sources'
+}
+
+artifacts {
+	archives jar
+
+	archives javadocJar
+	archives sourcesJar
+}
+
+signing {
+	sign configurations.archives
+}
+
+if(isReleaseBuild) {
+	signing {
+		sign configurations.archives
+	}
+} else {
+	// do nothing
+}
+
+uploadArchives {
+    repositories {
+        if (isDevBuild) {
+            mavenLocal()
+        }
+        else {
+            mavenDeployer {
+                if(isReleaseBuild) {
+                    beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+                }
+
+                repository(url: sonatypeRepositoryUrl) {
+                  authentication(userName: sonatypeUsername, password: sonatypePassword)
+                }
+
+                pom.project {
+                   name 'autodoc-base'
+                   packaging 'jar'
+                   description 'autodoc-base is the base library for autodoc tools (documentation generation for java annotated classes) '
+                   url 'https://bitbucket.org/riccardocossu/autodoc/overview'
+
+                   scm {
+                       url 'scm:git@bitbucket.org:riccardocossu/autodoc.git'
+                       connection 'git@bitbucket.org:riccardocossu/autodoc.git'
+                       developerConnection 'git@bitbucket.org:riccardocossu/autodoc.git'
+                   }
+
+                   licenses {
+                       license {
+                           name 'The Apache Software License, Version 2.0'
+                           url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                           distribution 'repo'
+                       }
+                   }
+
+                   developers {
+                       developer {
+                           id 'riccardocossu'
+                           name 'Riccardo Cossu'
+                       }
+                   }
+               }
+            }
+        }
+    }
+}
+
