@@ -39,6 +39,7 @@ dependencies {
 		exclude module: 'commons-logging'
 	}
 	compile group: 'org.slf4j', name: 'slf4j-api', version: slf4j_version
+	compile group: 'org.hibernate.javax.persistence', name: 'hibernate-jpa-2.0-api', version: '1.0.1.Final'
 	runtime group: 'org.slf4j', name: 'jcl-over-slf4j', version: slf4j_version
     testRuntime group: 'org.slf4j', name: 'slf4j-log4j12', version: slf4j_version    
     testCompile group: 'junit', name: 'junit', version: '4.+'

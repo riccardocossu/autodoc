@@ -12,6 +12,6 @@ import java.util.Collection;
  */
 public interface AnnotationsPlugin {
 	
-	Collection<Class<? extends Annotation>> getManagedAnnotations();
+	Collection<? extends Class> getManagedAnnotations();
 
 }
