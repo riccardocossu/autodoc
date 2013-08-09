@@ -1,7 +1,6 @@
 import org.gradle.api.artifacts.maven.MavenDeployment
 
 apply plugin: 'java'
-apply plugin: 'eclipse'
 apply plugin: 'maven'
 apply plugin: 'signing'
 
@@ -37,8 +36,15 @@ repositories {
     mavenCentral()
 }
 
+def slf4j_version = '1.7.5'
+
 dependencies {
-    compile group: 'commons-configuration', name: 'commons-configuration', version: '1.9'
+    compile (group: 'commons-configuration', name: 'commons-configuration', version: '1.9') {
+		exclude module: 'commons-logging'
+	}
+	compile group: 'org.slf4j', name: 'slf4j-api', version: slf4j_version
+	runtime group: 'org.slf4j', name: 'jcl-over-slf4j', version: slf4j_version
+	testRuntime group: 'org.slf4j', name: 'slf4j-log4j12', version: slf4j_version
     testCompile group: 'junit', name: 'junit', version: '4.+'
 }
 
@@ -72,7 +78,9 @@ if(isReleaseBuild) {
 		sign configurations.archives
 	}
 } else {
-	// do nothing
+	task signArchives {
+        // do nothing
+    }
 }
 
 uploadArchives {
