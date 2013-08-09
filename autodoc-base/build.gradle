@@ -1,12 +1,8 @@
-import org.gradle.api.artifacts.maven.MavenDeployment
-
 apply plugin: 'java'
-apply plugin: 'maven'
-apply plugin: 'signing'
+apply plugin: 'eclipse'
 
 sourceCompatibility = 1.5
-group = 'net.riccardocossu.autodoc'
-version = '0.1.0-SNAPSHOT'
+version = '1.0'
 
 def isDevBuild
 def isCiBuild
@@ -28,7 +24,7 @@ if(hasProperty("release")) {
 
 jar {
     manifest {
-        attributes 'Implementation-Title': 'autodoc-base', 'Implementation-Version': version
+        attributes 'Implementation-Title': 'Gradle Quickstart', 'Implementation-Version': version
     }
 }
 
@@ -44,12 +40,8 @@ dependencies {
 	}
 	compile group: 'org.slf4j', name: 'slf4j-api', version: slf4j_version
 	runtime group: 'org.slf4j', name: 'jcl-over-slf4j', version: slf4j_version
-	testRuntime group: 'org.slf4j', name: 'slf4j-log4j12', version: slf4j_version
+    testRuntime group: 'org.slf4j', name: 'slf4j-log4j12', version: slf4j_version    
     testCompile group: 'junit', name: 'junit', version: '4.+'
-}
-
-test {
-    systemProperties 'property': 'value'
 }
 
 task javadocJar(type: Jar, dependsOn: javadoc) {
@@ -69,16 +61,19 @@ artifacts {
 	archives sourcesJar
 }
 
-signing {
-	sign configurations.archives
+
+
+test {
+    systemProperties 'property': 'value'
 }
 
+//********* artifact signing *********
 if(isReleaseBuild) {
-	signing {
-		sign configurations.archives
-	}
+    signing {
+        sign configurations.archives
+    }
 } else {
-	task signArchives {
+    task signArchives {
         // do nothing
     }
 }
@@ -99,15 +94,15 @@ uploadArchives {
                 }
 
                 pom.project {
-                   name 'autodoc-base'
+                   name 'GradleFx'
                    packaging 'jar'
-                   description 'autodoc-base is the base library for autodoc tools (documentation generation for java annotated classes) '
-                   url 'https://bitbucket.org/riccardocossu/autodoc/overview'
+                   description 'GradleFx is a Gradle plugin for building Flex and Actionscript applications'
+                   url 'http://gradlefx.github.com/'
 
                    scm {
-                       url 'scm:git@bitbucket.org:riccardocossu/autodoc.git'
-                       connection 'git@bitbucket.org:riccardocossu/autodoc.git'
-                       developerConnection 'git@bitbucket.org:riccardocossu/autodoc.git'
+                       url 'scm:git@github.com:GradleFx/GradleFx.git'
+                       connection 'scm:git@github.com:GradleFx/GradleFx.git'
+                       developerConnection 'scm:git@github.com:GradleFx/GradleFx.git'
                    }
 
                    licenses {
@@ -120,8 +115,12 @@ uploadArchives {
 
                    developers {
                        developer {
-                           id 'riccardocossu'
-                           name 'Riccardo Cossu'
+                           id 'yennicktrevels'
+                           name 'Yennick Trevels'
+                       }
+                       developer {
+                           id 'stevendick'
+                           name 'Steven Dick'
                        }
                    }
                }
@@ -129,4 +128,3 @@ uploadArchives {
         }
     }
 }
-
