@@ -3,15 +3,20 @@
  */
 package net.riccardocossu.autodoc.base;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * @author riccardo
- *
+ * 
  */
 public class AnnotatedField {
 	private String name;
 	private List<AnnotationModel> annotations;
+
+	public AnnotatedField() {
+		annotations = new ArrayList<AnnotationModel>();
+	}
 
 	public List<AnnotationModel> getAnnotations() {
 		return annotations;
@@ -28,5 +33,5 @@ public class AnnotatedField {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 }

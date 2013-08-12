@@ -1,14 +1,20 @@
 package net.riccardocossu.autodoc.base;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * @author riccardo
- *
+ * 
  */
 public class AnnotatedMethod {
 	private String name;
-	
+	private List<AnnotationModel> annotations;
+
+	public AnnotatedMethod() {
+		annotations = new ArrayList<AnnotationModel>();
+	}
+
 	public String getName() {
 		return name;
 	}
@@ -24,7 +30,5 @@ public class AnnotatedMethod {
 	public void setAnnotations(List<AnnotationModel> annotations) {
 		this.annotations = annotations;
 	}
-
-	private List<AnnotationModel> annotations;
 
 }

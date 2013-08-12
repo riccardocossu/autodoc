@@ -33,9 +33,12 @@ public abstract class BaseAbstractPlugin implements AnnotationsPlugin {
 					attributes.add(new AttributeModel(name,
 							parse((Annotation) annValue)));
 				} else if (annValue instanceof Annotation[]) {
+					AnnotationModel md = new AnnotationModel();
+					attributes.add(new AttributeModel(name, md));
 					ArrayList<AnnotationModel> children = new ArrayList<AnnotationModel>();
-					res.setChildren(children);
+					md.setChildren(children);
 					Annotation[] annotations = (Annotation[]) annValue;
+					md.setQualifiedName(annotations.getClass().getName());
 					for (Annotation a : annotations) {
 						children.add(parse(a));
 					}
@@ -49,6 +52,7 @@ public abstract class BaseAbstractPlugin implements AnnotationsPlugin {
 		return res;
 	}
 
+	@Override
 	public AnnotationModel parse(Annotation target) {
 		Class<? extends Annotation> clazz = target.annotationType();
 		Method[] declaredMethods = clazz.getDeclaredMethods();
