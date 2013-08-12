@@ -3,10 +3,30 @@
  */
 package net.riccardocossu.autodoc.base;
 
+import java.util.List;
+
 /**
  * @author riccardo
  *
  */
 public class AnnotatedField {
+	private String name;
+	private List<AnnotationModel> annotations;
 
+	public List<AnnotationModel> getAnnotations() {
+		return annotations;
+	}
+
+	public void setAnnotations(List<AnnotationModel> annotations) {
+		this.annotations = annotations;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+	
 }
