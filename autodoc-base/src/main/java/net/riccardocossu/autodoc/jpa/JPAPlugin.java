@@ -53,7 +53,36 @@ import javax.persistence.NamedNativeQueries;
 import javax.persistence.NamedNativeQuery;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.OrderBy;
+import javax.persistence.OrderColumn;
+import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceContexts;
+import javax.persistence.PersistenceProperty;
+import javax.persistence.PersistenceUnit;
+import javax.persistence.PersistenceUnits;
+import javax.persistence.PostLoad;
+import javax.persistence.PostPersist;
+import javax.persistence.PostRemove;
+import javax.persistence.PostUpdate;
+import javax.persistence.PrePersist;
+import javax.persistence.PreRemove;
+import javax.persistence.PreUpdate;
+import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.PrimaryKeyJoinColumns;
 import javax.persistence.QueryHint;
+import javax.persistence.SecondaryTable;
+import javax.persistence.SecondaryTables;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.SqlResultSetMapping;
+import javax.persistence.SqlResultSetMappings;
+import javax.persistence.Table;
+import javax.persistence.TableGenerator;
+import javax.persistence.Temporal;
+import javax.persistence.Transient;
+import javax.persistence.UniqueConstraint;
+import javax.persistence.Version;
 
 import net.riccardocossu.autodoc.base.AnnotationModel;
 import net.riccardocossu.autodoc.base.AnnotationsPlugin;
@@ -80,7 +109,18 @@ public class JPAPlugin extends BaseAbstractPlugin implements AnnotationsPlugin {
 			MapKeyColumn.class, MapKeyEnumerated.class, MapKeyJoinColumn.class,
 			MapKeyJoinColumns.class, MapKeyTemporal.class,
 			MappedSuperclass.class, MapsId.class, NamedNativeQueries.class,
-			NamedNativeQuery.class);
+			NamedNativeQuery.class, OneToMany.class, OneToOne.class,
+			OrderBy.class, OrderColumn.class, PersistenceContext.class,
+			PersistenceContexts.class, PersistenceProperty.class,
+			PersistenceUnit.class, PersistenceUnits.class, PostLoad.class,
+			PostPersist.class, PostRemove.class, PostUpdate.class,
+			PrePersist.class, PreRemove.class, PreUpdate.class,
+			PrimaryKeyJoinColumn.class, PrimaryKeyJoinColumns.class,
+			QueryHint.class, SecondaryTable.class, SecondaryTables.class,
+			SequenceGenerator.class, SqlResultSetMapping.class,
+			SqlResultSetMappings.class, Table.class, TableGenerator.class,
+			Temporal.class, Transient.class, UniqueConstraint.class,
+			Version.class);
 
 	/*
 	 * (non-Javadoc)
@@ -292,6 +332,136 @@ public class JPAPlugin extends BaseAbstractPlugin implements AnnotationsPlugin {
 
 	public AnnotationModel parse(NamedQuery target) {
 		return getAnnotationValues(target, "name", "query", "hints", "lockMode");
+	}
+
+	public AnnotationModel parse(OneToMany target) {
+		return getAnnotationValues(target, "cascade", "fetch", "mappedBy",
+				"optional", "orphanRemoval", "targetEntity");
+	}
+
+	public AnnotationModel parse(OneToOne target) {
+		return getAnnotationValues(target, "cascade", "fetch", "mappedBy",
+				"orphanRemoval", "targetEntity");
+	}
+
+	public AnnotationModel parse(OrderBy target) {
+		return getAnnotationValues(target, "value");
+	}
+
+	public AnnotationModel parse(OrderColumn target) {
+		return getAnnotationValues(target, "columnDefinition", "insertable",
+				"name", "nullable", "updatable");
+	}
+
+	public AnnotationModel parse(PersistenceContext target) {
+		return getAnnotationValues(target, "name", "properties", "type",
+				"unitName");
+	}
+
+	public AnnotationModel parse(PersistenceContexts target) {
+		return getAnnotationValues(target, "value");
+	}
+
+	public AnnotationModel parse(PersistenceProperty target) {
+		return getAnnotationValues(target, "name", "value");
+	}
+
+	public AnnotationModel parse(PersistenceUnit target) {
+		return getAnnotationValues(target, "name", "unitName");
+	}
+
+	public AnnotationModel parse(PersistenceUnits target) {
+		return getAnnotationValues(target, "value");
+	}
+
+	public AnnotationModel parse(PostLoad target) {
+		return getAnnotationValues(target, new String[0]);
+	}
+
+	public AnnotationModel parse(PostPersist target) {
+		return getAnnotationValues(target, new String[0]);
+	}
+
+	public AnnotationModel parse(PostRemove target) {
+		return getAnnotationValues(target, new String[0]);
+	}
+
+	public AnnotationModel parse(PostUpdate target) {
+		return getAnnotationValues(target, new String[0]);
+	}
+
+	public AnnotationModel parse(PrePersist target) {
+		return getAnnotationValues(target, new String[0]);
+	}
+
+	public AnnotationModel parse(PreRemove target) {
+		return getAnnotationValues(target, new String[0]);
+	}
+
+	public AnnotationModel parse(PreUpdate target) {
+		return getAnnotationValues(target, new String[0]);
+	}
+
+	public AnnotationModel parse(PrimaryKeyJoinColumn target) {
+		return getAnnotationValues(target, "columnDefinition", "name",
+				"referencedColumnName");
+	}
+
+	public AnnotationModel parse(PrimaryKeyJoinColumns target) {
+		return getAnnotationValues(target, "value");
+	}
+
+	public AnnotationModel parse(QueryHint target) {
+		return getAnnotationValues(target, "name", "value");
+	}
+
+	public AnnotationModel parse(SecondaryTable target) {
+		return getAnnotationValues(target, "name", "catalog", "pkJoinColumns",
+				"uniqueConstraints");
+	}
+
+	public AnnotationModel parse(SecondaryTables target) {
+		return getAnnotationValues(target, "value");
+	}
+
+	public AnnotationModel parse(SequenceGenerator target) {
+		return getAnnotationValues(target, "name", "allocationSize", "catalog",
+				"initialValue", "schema", "sequenceName");
+	}
+
+	public AnnotationModel parse(SqlResultSetMapping target) {
+		return getAnnotationValues(target, "name", "columns", "entities");
+	}
+
+	public AnnotationModel parse(Table target) {
+		return getAnnotationValues(target, "catalog", "name", "schema",
+				"uniqueConstraints");
+	}
+
+	public AnnotationModel parse(TableGenerator target) {
+		return getAnnotationValues(target, "name", "table", "catalog",
+				"schema", "pkColumnName", "valueColumnName", "pkColumnValue",
+				"initialValue", "allocationSize", "uniqueConstraints");
+	}
+
+	public AnnotationModel parse(Temporal target) {
+		return getAnnotationValues(target, "value");
+	}
+
+	public AnnotationModel parse(SqlResultSetMappings target) {
+		return getAnnotationValues(target, "value");
+	}
+
+	public AnnotationModel parse(Transient target) {
+		return getAnnotationValues(target, new String[0]);
+	}
+
+	public AnnotationModel parse(UniqueConstraint target) {
+		return getAnnotationValues(target, "columnNames");
+	}
+
+	public AnnotationModel parse(Version target) {
+		return getAnnotationValues(target, new String[0]);
 	}
 
 	protected String toString(JoinColumn target) {

@@ -27,10 +27,18 @@ public abstract class BaseAbstractPlugin implements AnnotationsPlugin {
 		List<AttributeModel> attributes = res.getAttributes();
 		for (String name : attributeNames) {
 			try {
-				Method m = clazz.getDeclaredMethod(name, null);
+				Method m = clazz.getDeclaredMethod(name, (Class[]) null);
 				Object annValue = m.invoke(target, (Object[]) null);
-				if(annValue instanceof Annotation) {
-					attributes.add(new AttributeModel(name, parse((Annotation)annValue)));
+				if (annValue instanceof Annotation) {
+					attributes.add(new AttributeModel(name,
+							parse((Annotation) annValue)));
+				} else if (annValue instanceof Annotation[]) {
+					ArrayList<AnnotationModel> children = new ArrayList<AnnotationModel>();
+					res.setChildren(children);
+					Annotation[] annotations = (Annotation[]) annValue;
+					for (Annotation a : annotations) {
+						children.add(parse(a));
+					}
 				} else {
 					attributes.add(new AttributeModel(name, annValue));
 				}
@@ -40,20 +48,21 @@ public abstract class BaseAbstractPlugin implements AnnotationsPlugin {
 		}
 		return res;
 	}
-	
-	public AnnotationModel parse (Annotation target) {
+
+	public AnnotationModel parse(Annotation target) {
 		Class<? extends Annotation> clazz = target.annotationType();
 		Method[] declaredMethods = clazz.getDeclaredMethods();
 		List<String> names = new ArrayList<String>();
 		for (Method m : declaredMethods) {
 			names.add(m.getName());
 		}
-		return getAnnotationValues(target, names.toArray(new String[names.size()]));
-		
+		return getAnnotationValues(target,
+				names.toArray(new String[names.size()]));
+
 	}
-	
-	protected String toString (Object target) {
-		if(target == null) {
+
+	protected String toString(Object target) {
+		if (target == null) {
 			return null;
 		} else {
 			return target.toString();
