@@ -43,6 +43,7 @@ dependencies {
 	compile group: 'org.slf4j', name: 'slf4j-api', version: slf4j_version
 	compile group: 'org.hibernate.javax.persistence', name: 'hibernate-jpa-2.0-api', version: '1.0.1.Final'
 	compile group: 'org.reflections', name: 'reflections', version: '0.9.9-RC1'
+	compile group: 'org.freemarker', name: 'freemarker', version: '2.3.20'
 	runtime group: 'org.slf4j', name: 'jcl-over-slf4j', version: slf4j_version
 	runtime group: 'commons-beanutils', name: 'commons-beanutils', version: '1.8.3'
     testRuntime group: 'ch.qos.logback', name: 'logback-classic', version: '1.0.13'  

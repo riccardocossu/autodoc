@@ -34,7 +34,9 @@ public abstract class BaseAbstractPlugin implements AnnotationsPlugin {
 							parse((Annotation) annValue)));
 				} else if (annValue instanceof Annotation[]) {
 					AnnotationModel md = new AnnotationModel();
-					attributes.add(new AttributeModel(name, md));
+					AttributeModel att = new AttributeModel(name, md);
+					att.setValueIsAnnotationModel(true);
+					attributes.add(att);
 					ArrayList<AnnotationModel> children = new ArrayList<AnnotationModel>();
 					md.setChildren(children);
 					Annotation[] annotations = (Annotation[]) annValue;

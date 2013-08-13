@@ -109,18 +109,18 @@ public class JPAPlugin extends BaseAbstractPlugin implements AnnotationsPlugin {
 			MapKeyColumn.class, MapKeyEnumerated.class, MapKeyJoinColumn.class,
 			MapKeyJoinColumns.class, MapKeyTemporal.class,
 			MappedSuperclass.class, MapsId.class, NamedNativeQueries.class,
-			NamedNativeQuery.class, OneToMany.class, OneToOne.class,
-			OrderBy.class, OrderColumn.class, PersistenceContext.class,
-			PersistenceContexts.class, PersistenceProperty.class,
-			PersistenceUnit.class, PersistenceUnits.class, PostLoad.class,
-			PostPersist.class, PostRemove.class, PostUpdate.class,
-			PrePersist.class, PreRemove.class, PreUpdate.class,
-			PrimaryKeyJoinColumn.class, PrimaryKeyJoinColumns.class,
-			QueryHint.class, SecondaryTable.class, SecondaryTables.class,
-			SequenceGenerator.class, SqlResultSetMapping.class,
-			SqlResultSetMappings.class, Table.class, TableGenerator.class,
-			Temporal.class, Transient.class, UniqueConstraint.class,
-			Version.class);
+			NamedNativeQuery.class, NamedQueries.class, NamedQuery.class,
+			OneToMany.class, OneToOne.class, OrderBy.class, OrderColumn.class,
+			PersistenceContext.class, PersistenceContexts.class,
+			PersistenceProperty.class, PersistenceUnit.class,
+			PersistenceUnits.class, PostLoad.class, PostPersist.class,
+			PostRemove.class, PostUpdate.class, PrePersist.class,
+			PreRemove.class, PreUpdate.class, PrimaryKeyJoinColumn.class,
+			PrimaryKeyJoinColumns.class, QueryHint.class, SecondaryTable.class,
+			SecondaryTables.class, SequenceGenerator.class,
+			SqlResultSetMapping.class, SqlResultSetMappings.class, Table.class,
+			TableGenerator.class, Temporal.class, Transient.class,
+			UniqueConstraint.class, Version.class);
 
 	/*
 	 * (non-Javadoc)

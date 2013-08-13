@@ -1,0 +1,78 @@
+[#ftl]
+[#setting boolean_format="T,F"]
+[#macro annModel model]
+  ${model.qualifiedName}
+  <ol>
+  [#list model.attributes as att]
+  	[#if att.valueIsAnnotationModel]
+  		<li>[@annModel model=att.value /]</li>
+  	[#else]
+  	 <li>${att.name} = ${att.value}</li>
+  	[/#if]
+  [/#list]
+  </ol>
+  [#if model.children??]
+  		<ol>
+	  [#list model.children as c]
+	  	<li>
+	  	[@annModel model=c /]
+	  	</li>
+	  [/#list]
+	  </ol>
+  [/#if]
+[/#macro] 
+<html>
+	<head>
+		<title>Package ${pkg.name}</title>
+	</head>
+	<body>
+		<h2>Classes:</h2>
+		<ol>
+		[#list pkg.classes as c]
+			<li>
+   		 		<div>
+   		 			<h3>${c.qualifiedName}</h3>
+   		 			<b>Annotations</b>
+   		 			<ol>
+	   		 			[#list c.annotations as a]
+	   		 			<li>
+	   		 				[@annModel model=a /]
+	   		 			</li>
+	   		 			[/#list]
+   		 			</ol>
+   		 			<b>Fields</b>
+   		 			<ol>
+	   		 			[#list c.fields as f]
+	   		 			<li>
+	   		 				${f.name}
+	   		 				<ol>
+	   		 					[#list f.annotations as a]
+	   		 					<li>
+	   		 						[@annModel model=a /]
+	   		 					</li>
+	   		 					[/#list]
+	   		 				</ol>
+	   		 			</li>
+	   		 			[/#list]
+   		 			</ol>
+   		 			<b>Methods</b>
+   		 			<ol>
+	   		 			[#list c.methods as m]
+	   		 			<li>
+	   		 				${m.name}
+	   		 				<ol>
+	   		 					[#list m.annotations as a]
+	   		 					<li>
+	   		 						[@annModel model=a /]
+	   		 					</li>
+	   		 					[/#list]
+	   		 				</ol>
+	   		 			</li>
+	   		 			[/#list]
+   		 			</ol>
+   		 		</div>
+   		 	</li>
+		[/#list]
+		</ol>
+	</body>
+</html>

@@ -8,22 +8,13 @@ import java.util.List;
 
 /**
  * @author riccardo
- *
+ * 
  */
 public class AnnotationModel {
-	private String name;
 	private String qualifiedName;
 	private List<AttributeModel> attributes = new ArrayList<AttributeModel>();
-	
+
 	private List<AnnotationModel> children;
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
 
 	public String getQualifiedName() {
 		return qualifiedName;
@@ -48,6 +39,5 @@ public class AnnotationModel {
 	public void setAttributes(List<AttributeModel> attributes) {
 		this.attributes = attributes;
 	}
-	
 
 }

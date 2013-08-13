@@ -16,7 +16,7 @@ import net.riccardocossu.autodoc.base.AnnotationsPlugin;
 @SuppressWarnings("rawtypes")
 public class PluginFactory {
 
-	private Map<Class, AnnotationsPlugin> registeredPlugins = new HashMap<Class, AnnotationsPlugin>();
+	private Map<String, AnnotationsPlugin> registeredPlugins = new HashMap<String, AnnotationsPlugin>();
 
 	public void registerPlugin(AnnotationsPlugin plugin) {
 		Collection<? extends Class> managedAnnotations = plugin
@@ -24,12 +24,12 @@ public class PluginFactory {
 		for (Class c : managedAnnotations) {
 			// first registered plugin only for every annotation
 			if (!registeredPlugins.containsKey(c)) {
-				registeredPlugins.put(c, plugin);
+				registeredPlugins.put(c.getName(), plugin);
 			}
 		}
 	}
 
 	public AnnotationsPlugin getPluginForAnnotation(Class annotation) {
-		return registeredPlugins.get(annotation);
+		return registeredPlugins.get(annotation.getName());
 	}
 }
