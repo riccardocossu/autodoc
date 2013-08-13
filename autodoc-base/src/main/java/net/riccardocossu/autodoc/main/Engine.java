@@ -3,7 +3,11 @@
  */
 package net.riccardocossu.autodoc.main;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.riccardocossu.autodoc.base.AnnotationsPlugin;
+import net.riccardocossu.autodoc.base.PackageContainer;
 import net.riccardocossu.autodoc.parsers.PackageParser;
 import net.riccardocossu.autodoc.parsers.PluginFactory;
 
@@ -25,7 +29,7 @@ public class Engine {
 		this.configuration = configuration;
 	}
 
-	public void execute() {
+	public List<PackageContainer> execute() {
 		String[] plugins = configuration
 				.getStringArray("net.riccardocossu.autodoc.plugins");
 		log.debug("Using plugins: {}", (Object) plugins);
@@ -43,9 +47,13 @@ public class Engine {
 				.getStringArray("net.riccardocossu.autodoc.packages");
 		log.debug("Scanning packages: {}", (Object) packages);
 		PackageParser parser = new PackageParser();
+		List<PackageContainer> parsedPackages = new ArrayList<PackageContainer>();
 		for (String p : packages) {
-			parser.parse(p, factory);
+			PackageContainer pk = parser.parse(p, factory);
+			parsedPackages.add(pk);
 		}
+		return parsedPackages;
+
 	}
 
 }
