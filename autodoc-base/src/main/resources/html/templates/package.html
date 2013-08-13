@@ -5,7 +5,7 @@
   <ol>
   [#list model.attributes as att]
   	[#if att.valueIsAnnotationModel]
-  		<li>[@annModel model=att.value /]</li>
+  		<li>${att.name} = [@annModel model=att.value /]</li>
   	[#else]
   	 <li>${att.name} = ${att.value}</li>
   	[/#if]
