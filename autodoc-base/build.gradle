@@ -1,8 +1,10 @@
 apply plugin: 'java'
 apply plugin: 'eclipse'
+apply plugin: 'maven'
 
 sourceCompatibility = 1.5
 version = '1.0'
+group = 'net.riccardocossu.autodoc'
 
 def isDevBuild
 def isCiBuild
@@ -96,15 +98,15 @@ uploadArchives {
                 }
 
                 pom.project {
-                   name 'GradleFx'
+                   name 'autodoc-base'
                    packaging 'jar'
-                   description 'GradleFx is a Gradle plugin for building Flex and Actionscript applications'
-                   url 'http://gradlefx.github.com/'
+                   description 'AUtodoc is a collection of tools to automate documentation of annotated java classes'
+                   url 'https://bitbucket.org/riccardocossu/autodoc'
 
                    scm {
-                       url 'scm:git@github.com:GradleFx/GradleFx.git'
-                       connection 'scm:git@github.com:GradleFx/GradleFx.git'
-                       developerConnection 'scm:git@github.com:GradleFx/GradleFx.git'
+                       url 'scm:git@bitbucket.org:riccardocossu/autodoc.git'
+                       connection 'scm:git@bitbucket.org:riccardocossu/autodoc.git'
+                       developerConnection 'scm:git@bitbucket.org:riccardocossu/autodoc.git'
                    }
 
                    licenses {
@@ -117,16 +119,16 @@ uploadArchives {
 
                    developers {
                        developer {
-                           id 'yennicktrevels'
-                           name 'Yennick Trevels'
-                       }
-                       developer {
-                           id 'stevendick'
-                           name 'Steven Dick'
+                           id 'riccardocossu'
+                           name 'Riccardo Cossu'
                        }
                    }
                }
             }
         }
     }
+}
+
+tasks.withType(Compile) {
+	options.encoding = 'UTF-8'
 }
