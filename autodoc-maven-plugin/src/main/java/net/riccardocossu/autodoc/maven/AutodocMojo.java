@@ -54,6 +54,7 @@ public class AutodocMojo extends AbstractMojo {
 	 * List of packages to parse for annotated classes
 	 * 
 	 * @parameter
+	 * @required
 	 */
 	private String[] packages;
 
@@ -61,12 +62,14 @@ public class AutodocMojo extends AbstractMojo {
 	 * List of plugins to be used for annotation parsing
 	 * 
 	 * @parameter
+	 * @required
 	 */
 	private String[] inputPlugins;
 	/**
 	 * List of output plugins to be used for report generation
 	 * 
 	 * @parameter
+	 * @required
 	 */
 	private String[] outputPlugins;
 

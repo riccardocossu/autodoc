@@ -40,7 +40,9 @@ public abstract class BaseAbstractPlugin implements AnnotationsPlugin {
 					ArrayList<AnnotationModel> children = new ArrayList<AnnotationModel>();
 					md.setChildren(children);
 					Annotation[] annotations = (Annotation[]) annValue;
-					md.setQualifiedName(annotations.getClass().getName());
+					md.setQualifiedName(annotations.getClass()
+							.getComponentType().getName()
+							+ "[]");
 					for (Annotation a : annotations) {
 						children.add(parse(a));
 					}
