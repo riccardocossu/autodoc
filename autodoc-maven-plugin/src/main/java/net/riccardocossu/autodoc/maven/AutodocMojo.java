@@ -1,4 +1,4 @@
-package net.riccardocossu.autodoc.autodoc_maven_plugin;
+package net.riccardocossu.autodoc.maven;
 
 /*
  * Copyright 2001-2005 The Apache Software Foundation.
