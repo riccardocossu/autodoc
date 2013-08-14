@@ -17,8 +17,6 @@ package net.riccardocossu.autodoc.autodoc_maven_plugin;
  */
 
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.List;
 
 import net.riccardocossu.autodoc.base.PackageContainer;
@@ -56,7 +54,13 @@ public class AutodocMojo extends AbstractMojo {
 	 * 
 	 * @parameter
 	 */
-	private String[] plugins;
+	private String[] inputPlugins;
+	/**
+	 * List of output plugins to be used for report generation
+	 * 
+	 * @parameter
+	 */
+	private String[] outputPlugins;
 
 	public void execute() throws MojoExecutionException {
 		File f = new File(outputDirectory.getAbsolutePath() + "/autodoc");
@@ -67,28 +71,10 @@ public class AutodocMojo extends AbstractMojo {
 
 		BaseConfiguration conf = new BaseConfiguration();
 		conf.addProperty("net.riccardocossu.autodoc.packages", packages);
-		conf.addProperty("net.riccardocossu.autodoc.plugins", plugins);
+		conf.addProperty("net.riccardocossu.autodoc.plugins", inputPlugins);
 		Engine eng = new Engine(conf);
 		List<PackageContainer> parsedPackages = eng.execute();
-		File touch = new File(f, "log.txt");
-
-		FileWriter w = null;
-		try {
-			w = new FileWriter(touch);
-			for (PackageContainer p : parsedPackages) {
-				w.write(p.getName() + "\n");
-			}
-
-		} catch (IOException e) {
-			throw new MojoExecutionException("Error creating file " + touch, e);
-		} finally {
-			if (w != null) {
-				try {
-					w.close();
-				} catch (IOException e) {
-					// ignore
-				}
-			}
-		}
+		getLog().info(
+				String.format("Parsed %d packages", parsedPackages.size()));
 	}
 }

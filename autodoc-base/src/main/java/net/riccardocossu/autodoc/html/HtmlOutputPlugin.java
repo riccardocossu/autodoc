@@ -6,6 +6,7 @@ package net.riccardocossu.autodoc.html;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +14,7 @@ import java.util.Map;
 import net.riccardocossu.autodoc.base.OutputPlugin;
 import net.riccardocossu.autodoc.base.PackageContainer;
 
+import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,6 +34,9 @@ public class HtmlOutputPlugin implements OutputPlugin {
 			.getLogger(HtmlOutputPlugin.class);
 	private Configuration cfg;
 	private Template packageTemplate;
+
+	private String cssFile = "default.css";
+	private String cssPath = "/html/style/";
 
 	public HtmlOutputPlugin() {
 		super();
@@ -66,6 +71,13 @@ public class HtmlOutputPlugin implements OutputPlugin {
 		if (!baseDirectory.exists()) {
 			baseDirectory.mkdirs();
 		}
+		File css = new File(baseDirectory.getAbsolutePath() + "/" + cssFile);
+		URL cssRes = this.getClass().getResource(cssPath + cssFile);
+		try {
+			FileUtils.copyURLToFile(cssRes, css);
+		} catch (IOException e) {
+			log.error("Error copying css file " + cssPath + cssFile, e);
+		}
 		for (PackageContainer pc : packages) {
 			File report = new File(baseDirectory.getAbsolutePath() + "/"
 					+ pc.getName().replaceAll("\\.", "_") + ".html");
@@ -74,6 +86,7 @@ public class HtmlOutputPlugin implements OutputPlugin {
 				out = new FileWriter(report);
 				Map root = new HashMap();
 				root.put("pkg", pc);
+				root.put("cssFile", cssFile);
 				packageTemplate.process(root, out);
 			} catch (Exception e) {
 				log.error("Error parsing package " + pc.getName(), e);
@@ -89,4 +102,21 @@ public class HtmlOutputPlugin implements OutputPlugin {
 		}
 
 	}
+
+	public String getCssFile() {
+		return cssFile;
+	}
+
+	public void setCssFile(String cssFile) {
+		this.cssFile = cssFile;
+	}
+
+	public String getCssPath() {
+		return cssPath;
+	}
+
+	public void setCssPath(String cssPath) {
+		this.cssPath = cssPath;
+	}
+
 }

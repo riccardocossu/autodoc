@@ -1,78 +1,77 @@
 [#ftl]
 [#setting boolean_format="T,F"]
 [#macro annModel model]
-  ${model.qualifiedName}
-  <ol>
+  <span class="autodoc qualified_name">${model.qualifiedName}</span>
+  <ul class="autodoc attributes">
   [#list model.attributes as att]
   	[#if att.valueIsAnnotationModel]
   		<li>${att.name} = [@annModel model=att.value /]</li>
   	[#else]
-  	 <li>${att.name} = ${att.value}</li>
+  	 <li class="autodoc attribute">${att.name} = ${att.value}</li>
   	[/#if]
   [/#list]
-  </ol>
+  </ul>
   [#if model.children??]
-  		<ol>
-	  [#list model.children as c]
-	  	<li>
-	  	[@annModel model=c /]
+ 	<ul class="autodoc children">
+  		[#list model.children as c]
+	  	<li class="autodoc annotation">
+	  		[@annModel model=c /]
 	  	</li>
-	  [/#list]
-	  </ol>
+  		[/#list]
+  	</ul>
   [/#if]
 [/#macro] 
 <html>
 	<head>
+		<link href="${cssFile}" rel="stylesheet" type="text/css"/>
 		<title>Package ${pkg.name}</title>
 	</head>
 	<body>
 		<h2>Classes:</h2>
-		<ol>
+		<ul class="autodoc classes">
 		[#list pkg.classes as c]
 			<li>
-   		 		<div>
-   		 			<h3>${c.qualifiedName}</h3>
-   		 			<b>Annotations</b>
-   		 			<ol>
-	   		 			[#list c.annotations as a]
-	   		 			<li>
-	   		 				[@annModel model=a /]
-	   		 			</li>
-	   		 			[/#list]
-   		 			</ol>
-   		 			<b>Fields</b>
-   		 			<ol>
-	   		 			[#list c.fields as f]
-	   		 			<li>
-	   		 				${f.name}
-	   		 				<ol>
-	   		 					[#list f.annotations as a]
-	   		 					<li>
-	   		 						[@annModel model=a /]
-	   		 					</li>
-	   		 					[/#list]
-	   		 				</ol>
-	   		 			</li>
-	   		 			[/#list]
-   		 			</ol>
-   		 			<b>Methods</b>
-   		 			<ol>
-	   		 			[#list c.methods as m]
-	   		 			<li>
-	   		 				${m.name}
-	   		 				<ol>
-	   		 					[#list m.annotations as a]
-	   		 					<li>
-	   		 						[@annModel model=a /]
-	   		 					</li>
-	   		 					[/#list]
-	   		 				</ol>
-	   		 			</li>
-	   		 			[/#list]
-   		 			</ol>
-   		 		</div>
+  		 		<h3>${c.qualifiedName}</h3>
+  		 		<h4>Annotations</h4>
+  		 		<ul class="autodoc annotations">
+   		 			[#list c.annotations as a]
+   		 			<li class="autodoc annotation">
+   		 				[@annModel model=a /]
+   		 			</li>
+   		 			[/#list]
+  		 		</ul>
+		 		<h4>Fields</h4>
+		 		<ul class="autodoc fields">
+   		 			[#list c.fields as f]
+   		 			<li>
+   		 				<span class="autodoc fieldName">${f.name}</span>
+   		 				<ul class="autodoc annotations">
+   		 					[#list f.annotations as a]
+   		 					<li class="autodoc annotation">
+   		 						[@annModel model=a /]
+   		 					</li>
+   		 					[/#list]
+   		 				</ul>
+   		 			</li>
+   		 			[/#list]
+  		 		</ul>
+  		 		<h4>Methods</h4>
+  		 		<ul class="autodoc fields">
+   		 			[#list c.methods as m]
+   		 			<li>
+   		 				<span class="autodoc fieldName">${m.name}</span>
+   		 				<ul class="autodoc annotations">
+   		 					[#list m.annotations as a]
+   		 					<li class="autodoc annotation">
+   		 						[@annModel model=a /]
+   		 					</li>
+   		 					[/#list]
+   		 				</ul>
+   		 			</li>
+   		 			[/#list]
+  		 		</ul>
    		 	</li>
 		[/#list]
-		</ol>
+		</ul>
 	</body>
 </html>
