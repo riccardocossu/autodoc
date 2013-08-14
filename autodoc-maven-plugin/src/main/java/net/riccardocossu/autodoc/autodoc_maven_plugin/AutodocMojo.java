@@ -70,8 +70,10 @@ public class AutodocMojo extends AbstractMojo {
 		}
 
 		BaseConfiguration conf = new BaseConfiguration();
-		conf.addProperty("net.riccardocossu.autodoc.packages", packages);
-		conf.addProperty("net.riccardocossu.autodoc.plugins", inputPlugins);
+		conf.addProperty(Engine.CONFIG_PACKAGES, packages);
+		conf.addProperty(Engine.CONFIG_INPUT_PLUGINS, inputPlugins);
+		conf.addProperty(Engine.CONFIG_OUTPUT_PLUGINS, outputPlugins);
+		conf.addProperty(Engine.CONFIG_BASE_OUTPUT_DIR, f.getAbsolutePath());
 		Engine eng = new Engine(conf);
 		List<PackageContainer> parsedPackages = eng.execute();
 		getLog().info(
