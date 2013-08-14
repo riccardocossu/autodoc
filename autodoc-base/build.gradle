@@ -3,7 +3,7 @@ apply plugin: 'eclipse'
 apply plugin: 'maven'
 
 sourceCompatibility = 1.5
-version = '0.1.0-SNAPSHOT'
+version = '0.1.0'
 group = 'net.riccardocossu.autodoc'
 
 def isDevBuild
