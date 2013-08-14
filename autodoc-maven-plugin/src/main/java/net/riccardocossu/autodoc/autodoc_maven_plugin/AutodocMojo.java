@@ -17,14 +17,21 @@ package net.riccardocossu.autodoc.autodoc_maven_plugin;
  */
 
 import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import net.riccardocossu.autodoc.base.PackageContainer;
 import net.riccardocossu.autodoc.main.Engine;
 
 import org.apache.commons.configuration.BaseConfiguration;
+import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.project.MavenProject;
 
 /**
  * Goal which touches a timestamp file.
@@ -32,6 +39,7 @@ import org.apache.maven.plugin.MojoExecutionException;
  * @goal parse
  * 
  * @phase process-classes
+ * @requiresDependencyResolution compile+runtime
  */
 public class AutodocMojo extends AbstractMojo {
 	/**
@@ -62,7 +70,33 @@ public class AutodocMojo extends AbstractMojo {
 	 */
 	private String[] outputPlugins;
 
+	/**
+	 * Maven project
+	 * 
+	 * @parameter expression="${project}"
+	 */
+	private MavenProject project;
+
+	@SuppressWarnings("unchecked")
 	public void execute() throws MojoExecutionException {
+		try {
+			Set<URL> urls = new HashSet<URL>();
+			List<String> elements = project.getCompileClasspathElements();
+			for (String element : elements) {
+				urls.add(new File(element).toURI().toURL());
+			}
+
+			ClassLoader contextClassLoader = URLClassLoader.newInstance(urls
+					.toArray(new URL[0]), Thread.currentThread()
+					.getContextClassLoader());
+
+			Thread.currentThread().setContextClassLoader(contextClassLoader);
+
+		} catch (DependencyResolutionRequiredException e) {
+			throw new MojoExecutionException("Error expanding classloader", e);
+		} catch (MalformedURLException e) {
+			throw new MojoExecutionException("Error expanding classloader", e);
+		}
 		File f = new File(outputDirectory.getAbsolutePath() + "/autodoc");
 
 		if (!f.exists()) {
