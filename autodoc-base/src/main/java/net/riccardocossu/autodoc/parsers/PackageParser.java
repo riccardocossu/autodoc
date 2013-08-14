@@ -16,12 +16,16 @@ import org.reflections.scanners.SubTypesScanner;
 import org.reflections.util.ClasspathHelper;
 import org.reflections.util.ConfigurationBuilder;
 import org.reflections.util.FilterBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author riccardo
  * 
  */
 public class PackageParser {
+	private static final Logger log = LoggerFactory
+			.getLogger(PackageParser.class);
 
 	private ClassParser classParser = new ClassParser();
 
@@ -45,6 +49,7 @@ public class PackageParser {
 										.prefix(packagetoParse))));
 		Set<Class<?>> packClasses = ref.getSubTypesOf(Object.class);
 		for (Class<?> c : packClasses) {
+			log.debug("Parsing class {}", c.getName());
 			AnnotatedClass ac = classParser.parse(c, factory);
 			classes.add(ac);
 		}
