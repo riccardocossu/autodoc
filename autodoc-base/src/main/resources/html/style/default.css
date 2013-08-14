@@ -35,7 +35,7 @@ title {
 }
 
 .attributes li {
-	
+
 }
 
 .autodoc {
@@ -55,7 +55,7 @@ title {
 }
 
 .fieldName {
-	
+	font-weight: bold;
 }
 
 .fields {
@@ -63,9 +63,8 @@ title {
 }
 
 .fields li {
-	
 }
 
 .qualified_name {
-	
+	font-weight: bold;
 }
