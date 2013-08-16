@@ -48,7 +48,7 @@ public class ClassParser {
 		Method[] methods = clazz.getDeclaredMethods();
 		for (Method m : methods) {
 			AnnotatedMethod am = new AnnotatedMethod();
-			ac.getMethods().add(am);
+			boolean isInteresting = false;
 			am.setName(m.getName());
 			Annotation[] declaredAnnotations = m.getDeclaredAnnotations();
 			for (Annotation a : declaredAnnotations) {
@@ -56,8 +56,11 @@ public class ClassParser {
 						.annotationType());
 				if (pl != null) {
 					am.getAnnotations().add(pl.parse(a));
+					isInteresting = isInteresting || pl.isMethodUseful(m);
 				}
-
+			}
+			if (isInteresting) {
+				ac.getMethods().add(am);
 			}
 		}
 		return ac;

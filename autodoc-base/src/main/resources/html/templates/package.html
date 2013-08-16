@@ -1,28 +1,28 @@
 [#ftl]
 [#setting boolean_format="True,False"]
 [#macro annModel model]
-  <tr><td colspan="3">${model.qualifiedName}</td></tr>
+  <span class="qualified_name annotation">${model.qualifiedName}</span>
   [#if model.attributes?has_content]
+	  <ul>
 	  [#list model.attributes as att]
 		  [#if att.value?has_content]
-		  	<tr><td></td>
 		  	[#if att.valueIsAnnotationModel]
-		  		<td>${att.name}</td> <td><table>[@annModel model=att.value /]</table></td>
+		  		<li class="attribute"><span class="attributeName">${att.name}</span> = [@annModel model=att.value /]</li>
 		  	[#else]
-		  	 <td>${att.name}</td> <td>${att.value}</td>
+		  	 <li class="attribute"><span class="attributeName">${att.name}</span> = ${att.value}</li>
 		  	[/#if]
-		  	</tr>
 		  [/#if]
 	  [/#list]
+	  </ul>
   [/#if]
   [#if model.children??]
+ 	<ul class="children">
   		[#list model.children as c]
-  		<tr><td colspan="3">
-	  	<table>
+	  	<li>
 	  		[@annModel model=c /]
-	  	</table>
-	  	</td></tr>
+	  	</li>
   		[/#list]
+  	</ul>
   [/#if]
 [/#macro] 
 <html>
@@ -31,50 +31,72 @@
 		<title>Package ${pkg.name}</title>
 	</head>
 	<body>
-		<h1>Package ${pkg.name}</h1>
-		<h2>Classes:</h2>
-		<table>
-			[#list pkg.classes as c]
-				<tr><td colspan="3">${c.qualifiedName}</td></tr>
-				[#if c.annotations?has_content]
-	  		 		<tr><td colspan="3">Annotations</td></tr>
-  		 			[#list c.annotations as a]
-  		 				[@annModel model=a /]
-  		 			[/#list]
-	  		 	[/#if]
-	  		 	[#if c.fields?has_content]
-	  		 		<tr><td colspan="3">Fields</td></tr>
-  		 			[#list c.fields as f]
-  		 			<tr>
-  		 				<td></td>
-  		 				<td>${f.name}</td>
-  		 				<td>
-  		 				[#list f.annotations as a]
-  		 				<table>
-  		 					[@annModel model=a /]
-  		 				</table>
-  		 				[/#list]
-  		 				</td>
-  		 			</tr>
-  		 			[/#list]
-	  		 	[/#if]
-	  		 	[#if c.methods?has_content]
-	  		 		<tr><td colspan="3">Fields</td></tr>
-  		 			[#list c.methods as m]
-  		 			<tr>
-  		 				<td></td>
-  		 				<td>${m.name}</td>
-  		 				<td>
-  		 				[#list m.annotations as a]
-  		 				<table>
-  		 				[@annModel model=a /]
-  		 				</table>
-  		 				[/#list]
-  		 				</td>
-  		 			</tr>
-  		 			[/#list]
-	  		 	[/#if]
-			[/#list]
-		</table>
+		<div class="outer">
+			<h1>Package ${pkg.name}</h1>
+			<div class="colLeft">
+				<h2>Quick jump:</h2>
+				<ul>
+					[#list orderedClasses as c]
+						<li>
+							<a href="#class_${c.qualifiedName}">${c.qualifiedName?substring(c.qualifiedName?last_index_of('.')+1)}</a>
+						</li>
+					[/#list]
+				</ul>
+			</div>
+			<div class="colRight">
+				<h2>Classes:</h2>
+				<ul class="classes">
+				[#list pkg.classes as c]
+					<li>
+		  		 		<h3 id="class_${c.qualifiedName}">${c.qualifiedName}</h3>
+		  		 		[#if c.annotations?has_content]
+			  		 		<h4>Annotations</h4>
+			  		 		<ul class="annotations">
+			   		 			[#list c.annotations as a]
+			   		 			<li>
+			   		 				[@annModel model=a /]
+			   		 			</li>
+			   		 			[/#list]
+			  		 		</ul>
+			  		 	[/#if]
+			  		 	[#if c.fields?has_content]
+					 		<h4>Fields</h4>
+					 		<ul class="fields">
+			   		 			[#list c.fields as f]
+			   		 			<li>
+			   		 				<span class="fieldName">${f.name}</span>
+			   		 				<ul class="annotations">
+			   		 					[#list f.annotations as a]
+			   		 					<li>
+			   		 						[@annModel model=a /]
+			   		 					</li>
+			   		 					[/#list]
+			   		 				</ul>
+			   		 			</li>
+			   		 			[/#list]
+			  		 		</ul>
+		  		 		[/#if]
+		  		 		[#if c.methods?has_content]
+			  		 		<h4>Methods</h4>
+			  		 		<ul class="fields">
+			   		 			[#list c.methods as m]
+			   		 			<li>
+			   		 				<span class="fieldName">${m.name}</span>
+			   		 				<ul class="annotations">
+			   		 					[#list m.annotations as a]
+			   		 					<li class="annotation">
+			   		 						[@annModel model=a /]
+			   		 					</li>
+			   		 					[/#list]
+			   		 				</ul>
+			   		 			</li>
+			   		 			[/#list]
+			  		 		</ul>
+		  		 		[/#if]
+		   		 	</li>
+				[/#list]
+				</ul>
+			</div>
+		</div>
 	</body>
 </html>

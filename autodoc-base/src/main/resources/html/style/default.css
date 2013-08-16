@@ -16,55 +16,53 @@ title {
 	
 }
 
-.annotation {
-	
+ul {
+	list-style: none;
 }
 
-.annotations {
-	
+h3 {
+	background-color: #CCCCFF;
 }
 
-.annotations li {
-	
-}
-
-.attributes {
-	list-style-type: none;
-	padding: 0px;
-	margin: 0px;
-}
-
-.attributes li {
-
-}
-
-.autodoc {
-	
-}
-
-.children {
-	
-}
-
-.classes {
-	
-}
-
-.classes li{
-	
-}
-
-.fieldName {
-	font-weight: bold;
-}
-
-.fields {
-	
-}
-
-.fields li {
+h4 {
+	color: #1D4BCC;
 }
 
 .qualified_name {
 	font-weight: bold;
+	font-style: italic;
+}
+
+.attributeName {
+	font-weight: bold;
+}
+
+.fieldName {
+	font-weight: bold;
+	color: rgb(0,0,238);
+}
+
+li.attribute {
+	background-color: #F2F7F5;
+}
+
+.annotation {
+	color: #3D1F16;
+}
+
+div.outer {
+   width:100%;
+   margin:0 auto;
+}
+div.colLeft {
+   float:left;
+   width:15%;
+   height: 100%;
+   overflow: auto;
+}
+div.colRight {
+   float:right;
+   width:85%;
+   height: 100%;
+   overflow: auto;
 }

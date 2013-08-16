@@ -3,6 +3,7 @@
  */
 package net.riccardocossu.autodoc.jpa;
 
+import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -490,6 +491,11 @@ public class JPAPlugin extends BaseAbstractPlugin implements AnnotationsPlugin {
 
 	protected String toString(QueryHint[] target) {
 		return super.toString(target);
+	}
+
+	@Override
+	public boolean isMethodUseful(Method method) {
+		return method.getName().startsWith("get");
 	}
 
 }

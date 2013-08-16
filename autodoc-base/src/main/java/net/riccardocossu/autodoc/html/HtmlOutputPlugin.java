@@ -7,10 +7,15 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeSet;
 
+import net.riccardocossu.autodoc.base.AnnotatedClass;
 import net.riccardocossu.autodoc.base.OutputPlugin;
 import net.riccardocossu.autodoc.base.PackageContainer;
 
@@ -79,6 +84,27 @@ public class HtmlOutputPlugin implements OutputPlugin {
 			log.error("Error copying css file " + cssPath + cssFile, e);
 		}
 		for (PackageContainer pc : packages) {
+			TreeSet<AnnotatedClass> buffer = new TreeSet<AnnotatedClass>(
+					new Comparator<AnnotatedClass>() {
+
+						@Override
+						public int compare(AnnotatedClass o1, AnnotatedClass o2) {
+							String simpleName1 = o1.getQualifiedName()
+									.substring(
+											o1.getQualifiedName().lastIndexOf(
+													'.') + 1);
+							String simpleName2 = o2.getQualifiedName()
+									.substring(
+											o2.getQualifiedName().lastIndexOf(
+													'.') + 1);
+							return simpleName1.compareTo(simpleName2);
+						}
+					});
+			buffer.addAll(pc.getClasses());
+			List<AnnotatedClass> orderedClasses = new ArrayList<AnnotatedClass>();
+			for (Iterator<AnnotatedClass> it = buffer.iterator(); it.hasNext();) {
+				orderedClasses.add(it.next());
+			}
 			File report = new File(baseDirectory.getAbsolutePath() + "/"
 					+ pc.getName().replaceAll("\\.", "_") + ".html");
 			FileWriter out = null;
@@ -86,6 +112,7 @@ public class HtmlOutputPlugin implements OutputPlugin {
 				out = new FileWriter(report);
 				Map root = new HashMap();
 				root.put("pkg", pc);
+				root.put("orderedClasses", orderedClasses);
 				root.put("cssFile", cssFile);
 				packageTemplate.process(root, out);
 			} catch (Exception e) {
