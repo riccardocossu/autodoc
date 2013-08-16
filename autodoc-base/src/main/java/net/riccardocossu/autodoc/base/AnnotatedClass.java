@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Model for a class with annotations; it contains its filed and methods as well
+ * 
  * @author riccardo
  * 
  */

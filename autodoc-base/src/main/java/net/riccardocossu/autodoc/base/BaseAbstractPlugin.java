@@ -12,6 +12,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
+ * Class which collects all common logic
+ * 
  * @author riccardo
  * 
  */
@@ -56,6 +58,13 @@ public abstract class BaseAbstractPlugin implements AnnotationsPlugin {
 		return res;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * net.riccardocossu.autodoc.base.AnnotationsPlugin#parse(java.lang.annotation
+	 * .Annotation)
+	 */
 	@Override
 	public AnnotationModel parse(Annotation target) {
 		Class<? extends Annotation> clazz = target.annotationType();

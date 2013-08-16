@@ -13,6 +13,9 @@ import net.riccardocossu.autodoc.base.AnnotatedMethod;
 import net.riccardocossu.autodoc.base.AnnotationsPlugin;
 
 /**
+ * Class parser; it gets the right plugin from the factory and istruct it to
+ * parse every interesting annotation it finds on classes.
+ * 
  * @author riccardo
  * 
  */

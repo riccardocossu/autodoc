@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * model for an entire package and its subpackages
+ * 
  * @author riccardo
  * 
  */

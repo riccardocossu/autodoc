@@ -18,6 +18,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
+ * This class is responsible for all processing, from class parsing to output.
+ * Every operation is delegated to plugins.
+ * 
  * @author riccardo
  * 
  */

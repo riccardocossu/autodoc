@@ -31,6 +31,8 @@ import freemarker.template.TemplateExceptionHandler;
 import freemarker.template.Version;
 
 /**
+ * Html output plugin; it's based on Freemarker
+ * 
  * @author riccardo
  * 
  */

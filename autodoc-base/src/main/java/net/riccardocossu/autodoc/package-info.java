@@ -1,5 +1,5 @@
 /**
- * 
+ * Root package for autodoc tools
  */
 /**
  * @author riccardo

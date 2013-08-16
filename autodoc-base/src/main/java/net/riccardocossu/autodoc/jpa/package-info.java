@@ -1,5 +1,5 @@
 /**
- * 
+ * JPA tools
  */
 /**
  * @author riccardo

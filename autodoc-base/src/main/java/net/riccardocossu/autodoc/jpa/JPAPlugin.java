@@ -90,6 +90,8 @@ import net.riccardocossu.autodoc.base.AnnotationsPlugin;
 import net.riccardocossu.autodoc.base.BaseAbstractPlugin;
 
 /**
+ * this plugin is responsible for parsing all JPA2 annotations
+ * 
  * @author riccardo
  * 
  */

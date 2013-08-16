@@ -12,6 +12,14 @@ import java.util.List;
  */
 public interface OutputPlugin {
 
+	/**
+	 * Process a list of packages
+	 * 
+	 * @param packages
+	 *            list of packages to be processed
+	 * @param baseOutputDirectory
+	 *            directory to write output files to
+	 */
 	abstract void process(List<PackageContainer> packages,
 			File baseOutputDirectory);
 

@@ -20,6 +20,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
+ * This class is responsible for listing classes and passing them to the class
+ * parser.
+ * 
  * @author riccardo
  * 
  */

@@ -7,6 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Model for an annotation; if it contains an array, its elements are in the
+ * children property
+ * 
  * @author riccardo
  * 
  */

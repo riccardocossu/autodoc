@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Model for an annotated field
+ * 
  * @author riccardo
  * 
  */

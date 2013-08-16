@@ -10,6 +10,9 @@ import java.util.Map;
 import net.riccardocossu.autodoc.base.AnnotationsPlugin;
 
 /**
+ * Plugin container; it's duty is to give the right plugin at the right time to
+ * its users.
+ * 
  * @author riccardo
  * 
  */
@@ -18,6 +21,13 @@ public class PluginFactory {
 
 	private Map<String, AnnotationsPlugin> registeredPlugins = new HashMap<String, AnnotationsPlugin>();
 
+	/**
+	 * Register a plugin for its annotation; the order is relevant, because only
+	 * the first plugin is registered for a given annotation.
+	 * 
+	 * @param plugin
+	 *            the plugin to configure for its annotations.
+	 */
 	public void registerPlugin(AnnotationsPlugin plugin) {
 		Collection<? extends Class> managedAnnotations = plugin
 				.getManagedAnnotations();
@@ -29,6 +39,13 @@ public class PluginFactory {
 		}
 	}
 
+	/**
+	 * Returns the registered plugin for the given annotation.
+	 * 
+	 * @param annotation
+	 *            the annotation to look for
+	 * @return the registered plugin or <code>null</code> if none
+	 */
 	public AnnotationsPlugin getPluginForAnnotation(Class annotation) {
 		return registeredPlugins.get(annotation.getName());
 	}

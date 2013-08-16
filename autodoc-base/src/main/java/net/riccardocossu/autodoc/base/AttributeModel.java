@@ -4,6 +4,8 @@
 package net.riccardocossu.autodoc.base;
 
 /**
+ * Model for an annotation attribute
+ * 
  * @author riccardo
  * 
  */

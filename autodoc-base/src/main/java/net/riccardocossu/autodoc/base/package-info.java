@@ -1,5 +1,5 @@
 /**
- * 
+ * Base classes for use by every plugin
  */
 /**
  * @author riccardo
