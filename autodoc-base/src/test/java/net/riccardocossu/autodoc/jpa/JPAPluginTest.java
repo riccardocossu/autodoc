@@ -49,7 +49,8 @@ public class JPAPluginTest {
 			assertEquals(4, firstNq.getAttributes().size());
 			AnnotationModel amHA = (AnnotationModel) firstNq.getAttributes()
 					.get(2).getValue();
-			assertEquals(QueryHint[].class.getName(), amHA.getQualifiedName());
+			assertEquals(QueryHint.class.getName() + "[]",
+					amHA.getQualifiedName());
 			List<AnnotationModel> amHACh = amHA.getChildren();
 			assertEquals(2, amHACh.get(0).getAttributes().size());
 
