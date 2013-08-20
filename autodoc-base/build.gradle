@@ -1,6 +1,9 @@
+import org.gradle.api.artifacts.repositories.MavenArtifactRepository;
+
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'maven'
+apply plugin: 'signing'
 
 sourceCompatibility = 1.5
 version = '0.2.0'
@@ -14,6 +17,7 @@ def sonatypeRepositoryUrl
 
 //set build variables based on build type (release, continuous integration, development)
 if(hasProperty("release")) {
+	println 'Using release profile'
 	isReleaseBuild = true
 	sonatypeRepositoryUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
 } else if (hasProperty("ci")) {
@@ -24,14 +28,19 @@ if(hasProperty("release")) {
 	isDevBuild = true
 }
 
+//println "Is dev build = ${isDevBuild}"
+//println "Is CI build = ${isCiBuild}"
+//println "Is release = ${isReleaseBuild}"
+
+repositories {
+	mavenCentral()
+}
+
+
 jar {
     manifest {
         attributes 'Implementation-Title': 'Autodoc base', 'Implementation-Version': version
     }
-}
-
-repositories {
-    mavenCentral()
 }
 
 def slf4j_version = '1.7.5'
@@ -136,4 +145,8 @@ uploadArchives {
 
 tasks.withType(Compile) {
 	options.encoding = 'UTF-8'
+}
+
+task printProps << {
+	println release
 }
