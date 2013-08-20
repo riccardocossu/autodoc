@@ -7,7 +7,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.riccardocossu.autodoc.base.AnnotationsPlugin;
 import net.riccardocossu.autodoc.base.OutputPlugin;
 import net.riccardocossu.autodoc.base.PackageContainer;
 import net.riccardocossu.autodoc.parsers.PackageParser;
@@ -48,11 +47,9 @@ public class Engine {
 		PluginFactory factory = new PluginFactory();
 		for (String p : plugins) {
 			try {
-				Class<?> clazz = Class.forName(p);
-				AnnotationsPlugin pl = (AnnotationsPlugin) clazz.newInstance();
-				factory.registerPlugin(pl);
+				factory.registerPlugin(p);
 			} catch (Exception e) {
-				log.error("Error including plugin " + p, e);
+				log.error("Error including input plugin " + p, e);
 			}
 		}
 		String[] packages = configuration.getStringArray(CONFIG_PACKAGES);

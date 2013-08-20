@@ -3,6 +3,8 @@
  */
 package net.riccardocossu.autodoc.jpa;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Collection;
@@ -96,6 +98,7 @@ import net.riccardocossu.autodoc.base.BaseAbstractPlugin;
  * 
  */
 public class JPAPlugin extends BaseAbstractPlugin implements AnnotationsPlugin {
+	private static final String SHORT_NAME = "JPA2";
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private static final List<? extends Class> MANAGED = Arrays.asList(
 			Access.class, AssociationOverride.class,
@@ -498,6 +501,32 @@ public class JPAPlugin extends BaseAbstractPlugin implements AnnotationsPlugin {
 	@Override
 	public boolean isMethodUseful(Method method) {
 		return method.getName().startsWith("get");
+	}
+
+	@Override
+	public boolean isClassUseful(@SuppressWarnings("rawtypes") Class clazz) {
+		// for jpa parsing a class is interesting only if it is annotated with
+		// either
+		// Entity, MappedSuperclass or Embeddable
+		boolean isClassUseful = false;
+		Annotation[] annotations = clazz.getAnnotations();
+		for (Annotation a : annotations) {
+			isClassUseful = isClassUseful || (a instanceof Entity)
+					|| (a instanceof MappedSuperclass)
+					|| (a instanceof Embeddable);
+		}
+		return isClassUseful;
+	}
+
+	@Override
+	public boolean isFieldUseful(Field field) {
+		// a field is always useful for jpa
+		return true;
+	}
+
+	@Override
+	public String getShortName() {
+		return SHORT_NAME;
 	}
 
 }

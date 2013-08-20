@@ -4,6 +4,7 @@
 package net.riccardocossu.autodoc.base;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Collection;
 
@@ -43,5 +44,34 @@ public interface AnnotationsPlugin {
 	 *         otherwise
 	 */
 	public abstract boolean isMethodUseful(Method method);
+
+	/**
+	 * Tells the engine if the given class is useful for this plugin
+	 * 
+	 * @param clazz
+	 *            the class to check for
+	 * @return <code>true</code> if the plugin is interested in parsing this
+	 *         class
+	 */
+	public abstract boolean isClassUseful(Class clazz);
+
+	/**
+	 * Telss the engine if the given field is interesting for this plugin
+	 * 
+	 * @param field
+	 *            the field to examine
+	 * @return <code>true</code> if the plugin is interested in parsing this
+	 *         field
+	 */
+	public abstract boolean isFieldUseful(Field field);
+
+	/**
+	 * Gets a short name for the plugin, which can be used to refer the plugin
+	 * in configuration
+	 * 
+	 * @return the short name for the plugin or <code>null</code> if the plugin
+	 *         is not interested in this feature
+	 */
+	public abstract String getShortName();
 
 }
