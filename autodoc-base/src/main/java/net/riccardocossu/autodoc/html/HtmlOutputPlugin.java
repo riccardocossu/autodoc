@@ -54,10 +54,9 @@ public class HtmlOutputPlugin implements OutputPlugin {
 		cfg.setDefaultEncoding("UTF-8");
 		cfg.setTemplateExceptionHandler(TemplateExceptionHandler.HTML_DEBUG_HANDLER);
 		cfg.setIncompatibleImprovements(new Version(2, 3, 20));
-		cfg.setBooleanFormat("true,false");
 
 		try {
-			packageTemplate = cfg.getTemplate("package.html");
+			packageTemplate = cfg.getTemplate("package-template.html");
 		} catch (IOException e) {
 			log.error("Error parsing base templates", e);
 		}
