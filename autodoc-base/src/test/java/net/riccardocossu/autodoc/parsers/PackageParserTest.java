@@ -15,7 +15,7 @@ public class PackageParserTest {
 		factory.registerPlugin(new JPAPlugin());
 		PackageContainer pack = parser.parse(
 				"net.riccardocossu.autodoc.test.model", factory);
-		assertEquals(4, pack.getClasses().size());
+		assertEquals(6, pack.getClasses().size());
 	}
 
 }
