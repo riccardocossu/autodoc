@@ -2,9 +2,11 @@ package net.riccardocossu.autodoc.parsers;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import net.riccardocossu.autodoc.base.AnnotatedClass;
 import net.riccardocossu.autodoc.jpa.JPAPlugin;
 import net.riccardocossu.autodoc.test.model.AnnotatedTestEntity;
+import net.riccardocossu.autodoc.test.model.NonJPATestEntity;
 import net.riccardocossu.autodoc.test.model.optional.EntityWithEmbeddable;
 
 import org.junit.Test;
@@ -12,7 +14,7 @@ import org.junit.Test;
 public class ClassParserTest {
 
 	@Test
-	public void test() {
+	public void testSimple() {
 		PluginFactory factory = new PluginFactory();
 		factory.registerPlugin(new JPAPlugin());
 		ClassParser parser = new ClassParser();
@@ -33,6 +35,15 @@ public class ClassParserTest {
 		assertEquals(2, res.getAnnotations().size());
 		assertEquals(1, res.getFields().size());
 		assertEquals(0, res.getMethods().size());
+	}
+
+	@Test
+	public void testNonJpa() {
+		PluginFactory factory = new PluginFactory();
+		factory.registerPlugin(new JPAPlugin());
+		ClassParser parser = new ClassParser();
+		AnnotatedClass res = parser.parse(NonJPATestEntity.class, factory);
+		assertNull(res);
 	}
 
 }
