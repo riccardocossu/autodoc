@@ -6,6 +6,7 @@ package net.riccardocossu.autodoc.base;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -31,9 +32,14 @@ public abstract class BaseAbstractPlugin implements AnnotationsPlugin {
 			try {
 				Method m = clazz.getDeclaredMethod(name, (Class[]) null);
 				Object annValue = m.invoke(target, (Object[]) null);
-				if (annValue instanceof Annotation) {
-					attributes.add(new AttributeModel(name,
-							parse((Annotation) annValue)));
+				if(annValue == null) {
+					AttributeModel atMd = new AttributeModel(name,"null");
+					attributes.add(atMd);
+				} else if (annValue instanceof Annotation) {
+					AttributeModel atMd = new AttributeModel(name,
+							parse((Annotation) annValue));
+					atMd.setValueIsAnnotationModel(true);
+					attributes.add(atMd);
 				} else if (annValue instanceof Annotation[]) {
 					AnnotationModel md = new AnnotationModel();
 					AttributeModel att = new AttributeModel(name, md);
@@ -48,6 +54,8 @@ public abstract class BaseAbstractPlugin implements AnnotationsPlugin {
 					for (Annotation a : annotations) {
 						children.add(parse(a));
 					}
+				} else if (annValue.getClass().isArray()) {
+					attributes.add(new AttributeModel(name, toArrayString(annValue)));
 				} else {
 					attributes.add(new AttributeModel(name, annValue));
 				}
@@ -84,6 +92,37 @@ public abstract class BaseAbstractPlugin implements AnnotationsPlugin {
 		} else {
 			return target.toString();
 		}
+	}
+
+	private String toArrayString(Object arr) {
+		if (arr instanceof boolean[]) {
+			return Arrays.toString((boolean[]) arr);
+		}
+		if (arr instanceof byte[]) {
+			return Arrays.toString((byte[]) arr);
+		}
+		if (arr instanceof short[]) {
+			return Arrays.toString((short[]) arr);
+		}
+		if (arr instanceof char[]) {
+			return Arrays.toString((char[]) arr);
+		}
+		if (arr instanceof int[]) {
+			return Arrays.toString((int[]) arr);
+		}
+		if (arr instanceof long[]) {
+			return Arrays.toString((long[]) arr);
+		}
+		if (arr instanceof float[]) {
+			return Arrays.toString((float[]) arr);
+		}
+		if (arr instanceof double[]) {
+			return Arrays.toString((double[]) arr);
+		}
+		if (arr instanceof Object[]) {
+			return Arrays.toString((Object[]) arr);
+		}
+		return "unknown";
 	}
 
 }
