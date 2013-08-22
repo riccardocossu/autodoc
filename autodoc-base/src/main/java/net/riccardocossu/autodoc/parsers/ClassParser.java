@@ -21,49 +21,61 @@ import net.riccardocossu.autodoc.base.AnnotationsPlugin;
  */
 public class ClassParser {
 
+	/**
+	 * Parse the given class
+	 * 
+	 * @param clazz
+	 *            the class to parse
+	 * @param factory
+	 *            the configured plugin factory
+	 * @return the parsed class model, or <code>null</code> if no plugin is
+	 *         interested in it
+	 */
 	public AnnotatedClass parse(@SuppressWarnings("rawtypes") Class clazz,
 			PluginFactory factory) {
-		AnnotatedClass ac = new AnnotatedClass();
-		ac.setQualifiedName(clazz.getName());
+		AnnotatedClass ac = null;
 		Annotation[] annotations = clazz.getDeclaredAnnotations();
-		for (Annotation a : annotations) {
-			AnnotationsPlugin pl = factory.getPluginForAnnotation(a
-					.annotationType());
-			if (pl != null) {
-				ac.getAnnotations().add(pl.parse(a));
-			}
-		}
-		Field[] fields = clazz.getDeclaredFields();
-		for (Field f : fields) {
-			AnnotatedField af = new AnnotatedField();
-			ac.getFields().add(af);
-			af.setName(f.getName());
-			Annotation[] declaredAnnotations = f.getDeclaredAnnotations();
-			for (Annotation a : declaredAnnotations) {
-				AnnotationsPlugin pl = factory.getPluginForAnnotation(a
-						.annotationType());
+		if (factory.isClassUseful(clazz, annotations)) {
+			ac = new AnnotatedClass();
+			ac.setQualifiedName(clazz.getName());
+			AnnotationsPlugin pl = null;
+			Annotation[] declaredAnnotations = null;
+			for (Annotation a : annotations) {
+				pl = factory.getPluginForAnnotation(a.annotationType());
 				if (pl != null) {
-					af.getAnnotations().add(pl.parse(a));
+					ac.getAnnotations().add(pl.parse(a));
 				}
+			}
+			Field[] fields = clazz.getDeclaredFields();
+			for (Field f : fields) {
+				AnnotatedField af = new AnnotatedField();
+				ac.getFields().add(af);
+				af.setName(f.getName());
+				declaredAnnotations = f.getDeclaredAnnotations();
+				for (Annotation a : declaredAnnotations) {
+					pl = factory.getPluginForAnnotation(a.annotationType());
+					if (pl != null) {
+						af.getAnnotations().add(pl.parse(a));
+					}
 
-			}
-		}
-		Method[] methods = clazz.getDeclaredMethods();
-		for (Method m : methods) {
-			AnnotatedMethod am = new AnnotatedMethod();
-			boolean isInteresting = false;
-			am.setName(m.getName());
-			Annotation[] declaredAnnotations = m.getDeclaredAnnotations();
-			for (Annotation a : declaredAnnotations) {
-				AnnotationsPlugin pl = factory.getPluginForAnnotation(a
-						.annotationType());
-				if (pl != null) {
-					am.getAnnotations().add(pl.parse(a));
-					isInteresting = isInteresting || pl.isMethodUseful(m);
 				}
 			}
-			if (isInteresting) {
-				ac.getMethods().add(am);
+			Method[] methods = clazz.getDeclaredMethods();
+			for (Method m : methods) {
+				AnnotatedMethod am = new AnnotatedMethod();
+				boolean isInteresting = false;
+				am.setName(m.getName());
+				declaredAnnotations = m.getDeclaredAnnotations();
+				for (Annotation a : declaredAnnotations) {
+					pl = factory.getPluginForAnnotation(a.annotationType());
+					if (pl != null) {
+						am.getAnnotations().add(pl.parse(a));
+						isInteresting = isInteresting || pl.isMethodUseful(m);
+					}
+				}
+				if (isInteresting) {
+					ac.getMethods().add(am);
+				}
 			}
 		}
 		return ac;

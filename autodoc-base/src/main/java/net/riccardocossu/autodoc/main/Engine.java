@@ -43,7 +43,7 @@ public class Engine {
 
 	public List<PackageContainer> execute() {
 		String[] plugins = configuration.getStringArray(CONFIG_INPUT_PLUGINS);
-		log.debug("Using plugins: {}", (Object) plugins);
+		log.info("Using plugins: {}", (Object) plugins);
 		PluginFactory factory = new PluginFactory();
 		for (String p : plugins) {
 			try {
@@ -53,7 +53,7 @@ public class Engine {
 			}
 		}
 		String[] packages = configuration.getStringArray(CONFIG_PACKAGES);
-		log.debug("Scanning packages: {}", (Object) packages);
+		log.info("Scanning packages: {}", (Object) packages);
 		PackageParser parser = new PackageParser();
 		List<PackageContainer> parsedPackages = new ArrayList<PackageContainer>();
 		for (String p : packages) {
@@ -67,7 +67,7 @@ public class Engine {
 		File baseOutputDirectory = new File(confOutputDir);
 		String[] outputPlugins = configuration
 				.getStringArray(CONFIG_OUTPUT_PLUGINS);
-		log.debug("Using output plugins: {}", (Object) outputPlugins);
+		log.info("Using output plugins: {}", (Object) outputPlugins);
 		for (String p : outputPlugins) {
 			try {
 				Class<?> clazz = Class.forName(p);

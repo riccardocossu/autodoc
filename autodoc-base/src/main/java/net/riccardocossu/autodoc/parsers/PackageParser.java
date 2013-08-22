@@ -29,23 +29,28 @@ public class PackageParser {
 	private ClassParser classParser = new ClassParser();
 
 	public PackageContainer parse(String packagetoParse, PluginFactory factory) {
-		log.debug("Parsing package {}",packagetoParse);
+		log.debug("Parsing package {}", packagetoParse);
 		PackageContainer res = new PackageContainer();
 		res.setName(packagetoParse);
 		List<AnnotatedClass> classes = res.getClasses();
 		Set<Class<?>> packClasses = new HashSet<Class<?>>();
 		try {
-			ClassPath classpath = ClassPath.from(Thread.currentThread().getContextClassLoader()); // scans the class path used by classloader
-			for (ClassPath.ClassInfo classInfo : classpath.getTopLevelClassesRecursive(packagetoParse)) {
+			ClassPath classpath = ClassPath.from(Thread.currentThread()
+					.getContextClassLoader()); // scans the class path used by
+												// classloader
+			for (ClassPath.ClassInfo classInfo : classpath
+					.getTopLevelClassesRecursive(packagetoParse)) {
 				packClasses.add(classInfo.load());
 			}
 			for (Class<?> c : packClasses) {
 				log.debug("Parsing class {}", c.getName());
 				AnnotatedClass ac = classParser.parse(c, factory);
-				classes.add(ac);
+				if (ac != null) {
+					classes.add(ac);
+				}
 			}
 		} catch (Exception e) {
-			log.error("Error parsing package "+packagetoParse,e);
+			log.error("Error parsing package " + packagetoParse, e);
 		}
 		return res;
 	}

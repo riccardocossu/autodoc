@@ -3,11 +3,14 @@
  */
 package net.riccardocossu.autodoc.parsers;
 
+import java.lang.annotation.Annotation;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.ServiceLoader;
+import java.util.Set;
 
 import net.riccardocossu.autodoc.base.AnnotationsPlugin;
 import net.riccardocossu.autodoc.base.OutputPlugin;
@@ -22,7 +25,8 @@ import net.riccardocossu.autodoc.base.OutputPlugin;
 @SuppressWarnings("rawtypes")
 public class PluginFactory {
 
-	private Map<String, AnnotationsPlugin> registeredPlugins = new HashMap<String, AnnotationsPlugin>();
+	private Map<String, AnnotationsPlugin> pluginsByAnnotation = new HashMap<String, AnnotationsPlugin>();
+	private Set<AnnotationsPlugin> registeredPlugins = new HashSet<AnnotationsPlugin>();
 	private static Map<String, AnnotationsPlugin> inputPluginsByShortName = new HashMap<String, AnnotationsPlugin>();
 	private static Map<String, OutputPlugin> outputPluginsByShortName = new HashMap<String, OutputPlugin>();
 	static {
@@ -32,6 +36,8 @@ public class PluginFactory {
 		while (it.hasNext()) {
 			AnnotationsPlugin pl = it.next();
 			String shortName = pl.getShortName();
+			// if plugins doesn't want or need to be called by shortname, it
+			// should set this method to return null
 			if (shortName != null) {
 				inputPluginsByShortName.put(shortName, pl);
 			}
@@ -46,12 +52,13 @@ public class PluginFactory {
 	 *            the plugin to configure for its annotations.
 	 */
 	public void registerPlugin(AnnotationsPlugin plugin) {
+		registeredPlugins.add(plugin);
 		Collection<? extends Class> managedAnnotations = plugin
 				.getManagedAnnotations();
 		for (Class c : managedAnnotations) {
 			// first registered plugin only for every annotation
-			if (!registeredPlugins.containsKey(c)) {
-				registeredPlugins.put(c.getName(), plugin);
+			if (!pluginsByAnnotation.containsKey(c)) {
+				pluginsByAnnotation.put(c.getName(), plugin);
 			}
 		}
 	}
@@ -78,6 +85,26 @@ public class PluginFactory {
 	 * @return the registered plugin or <code>null</code> if none
 	 */
 	public AnnotationsPlugin getPluginForAnnotation(Class annotation) {
-		return registeredPlugins.get(annotation.getName());
+		return pluginsByAnnotation.get(annotation.getName());
+	}
+
+	/**
+	 * Tells if a class is relevant for at least one plugin
+	 * 
+	 * @param clazz
+	 *            the class to check
+	 * @param classLevelAnnotations
+	 *            the array of annotation, to avoid repeating the call for every
+	 *            plugin
+	 * @return <code>true</code> if the class is interesting to at least one
+	 *         plugin, <code>false</code> otherwise
+	 */
+	public boolean isClassUseful(Class clazz, Annotation[] classLevelAnnotations) {
+		boolean isUseful = false;
+		for (Iterator<AnnotationsPlugin> it = registeredPlugins.iterator(); !isUseful
+				&& it.hasNext();) {
+			isUseful = it.next().isClassUseful(clazz, classLevelAnnotations);
+		}
+		return isUseful;
 	}
 }

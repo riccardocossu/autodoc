@@ -50,10 +50,14 @@ public interface AnnotationsPlugin {
 	 * 
 	 * @param clazz
 	 *            the class to check for
+	 * @param classLevelAnnotations
+	 *            the array of annotation of the class, to avoid having this
+	 *            called by every plugin in the stack
 	 * @return <code>true</code> if the plugin is interested in parsing this
 	 *         class
 	 */
-	public abstract boolean isClassUseful(Class clazz);
+	public abstract boolean isClassUseful(Class clazz,
+			Annotation[] classLevelAnnotations);
 
 	/**
 	 * Telss the engine if the given field is interesting for this plugin

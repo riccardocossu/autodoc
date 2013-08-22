@@ -504,13 +504,13 @@ public class JPAPlugin extends BaseAbstractPlugin implements AnnotationsPlugin {
 	}
 
 	@Override
-	public boolean isClassUseful(@SuppressWarnings("rawtypes") Class clazz) {
+	public boolean isClassUseful(@SuppressWarnings("rawtypes") Class clazz,
+			Annotation[] classAnnotations) {
 		// for jpa parsing a class is interesting only if it is annotated with
 		// either
 		// Entity, MappedSuperclass or Embeddable
 		boolean isClassUseful = false;
-		Annotation[] annotations = clazz.getAnnotations();
-		for (Annotation a : annotations) {
+		for (Annotation a : classAnnotations) {
 			isClassUseful = isClassUseful || (a instanceof Entity)
 					|| (a instanceof MappedSuperclass)
 					|| (a instanceof Embeddable);
