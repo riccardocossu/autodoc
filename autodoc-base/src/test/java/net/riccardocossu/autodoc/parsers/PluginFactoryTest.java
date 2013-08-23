@@ -1,5 +1,8 @@
 package net.riccardocossu.autodoc.parsers;
 
+import static org.junit.Assert.assertNotNull;
+import net.riccardocossu.autodoc.base.OutputPlugin;
+
 import org.junit.Test;
 
 public class PluginFactoryTest {
@@ -15,6 +18,7 @@ public class PluginFactoryTest {
 	public void testHTMLShortName() {
 		// tests that the JPA plugin is configurable through its short name
 		PluginFactory factory = new PluginFactory();
-		factory.initOutputPlugin("HTML", null);
+		OutputPlugin op = factory.initOutputPlugin("HTML", null);
+		assertNotNull(op);
 	}
 }
