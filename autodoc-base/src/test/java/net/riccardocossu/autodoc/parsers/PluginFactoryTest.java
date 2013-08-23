@@ -15,6 +15,6 @@ public class PluginFactoryTest {
 	public void testHTMLShortName() {
 		// tests that the JPA plugin is configurable through its short name
 		PluginFactory factory = new PluginFactory();
-		factory.registerInputPlugin("HTML");
+		factory.initOutputPlugin("HTML", null);
 	}
 }
