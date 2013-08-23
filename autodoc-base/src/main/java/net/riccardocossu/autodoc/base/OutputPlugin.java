@@ -23,4 +23,22 @@ public interface OutputPlugin {
 	abstract void process(List<PackageContainer> packages,
 			File baseOutputDirectory);
 
+	/**
+	 * Gets a short name for the plugin, which can be used to refer the plugin
+	 * in configuration
+	 * 
+	 * @return the short name for the plugin or <code>null</code> if the plugin
+	 *         is not interested in this feature
+	 */
+	public abstract String getShortName();
+
+	/**
+	 * Configures the plugin with the given resource; the implementation is
+	 * plugin specific
+	 * 
+	 * @param configResource
+	 *            Resource path where to look for the configuration
+	 */
+	public abstract void configure(String configResource);
+
 }

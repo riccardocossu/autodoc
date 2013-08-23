@@ -19,6 +19,8 @@ import net.riccardocossu.autodoc.base.AnnotatedClass;
 import net.riccardocossu.autodoc.base.OutputPlugin;
 import net.riccardocossu.autodoc.base.PackageContainer;
 
+import org.apache.commons.configuration.ConfigurationException;
+import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,6 +39,7 @@ import freemarker.template.Version;
  * 
  */
 public class HtmlOutputPlugin implements OutputPlugin {
+	private static final String SHORT_NAME = "HTML";
 	private static final Logger log = LoggerFactory
 			.getLogger(HtmlOutputPlugin.class);
 	private Configuration cfg;
@@ -44,22 +47,29 @@ public class HtmlOutputPlugin implements OutputPlugin {
 
 	private String cssFile = "default.css";
 	private String cssPath = "/html/style/";
+	private String baseTemplatePath = "/html/templates";
+	private String outputEncoding = "UTF-8";
+	private String packageTemplateName = "package-template.html";
+	private boolean initialized = false;
 
 	public HtmlOutputPlugin() {
 		super();
 		cfg = new Configuration();
-		cfg.setTemplateLoader(new ClassTemplateLoader(this.getClass(),
-				"/html/templates"));
 		cfg.setObjectWrapper(new DefaultObjectWrapper());
-		cfg.setDefaultEncoding("UTF-8");
 		cfg.setTemplateExceptionHandler(TemplateExceptionHandler.HTML_DEBUG_HANDLER);
 		cfg.setIncompatibleImprovements(new Version(2, 3, 20));
+	}
 
+	private void initialize() {
+		cfg.setDefaultEncoding(outputEncoding);
+		cfg.setTemplateLoader(new ClassTemplateLoader(this.getClass(),
+				baseTemplatePath));
 		try {
-			packageTemplate = cfg.getTemplate("package-template.html");
+			packageTemplate = cfg.getTemplate(packageTemplateName);
 		} catch (IOException e) {
-			log.error("Error parsing base templates", e);
+			log.error("Error parsing base templates: " + packageTemplateName, e);
 		}
+		initialized = true;
 	}
 
 	/*
@@ -72,6 +82,9 @@ public class HtmlOutputPlugin implements OutputPlugin {
 	@Override
 	public void process(List<PackageContainer> packages,
 			File baseOutputDirectory) {
+		if (!initialized) {
+			initialize();
+		}
 		File baseDirectory = new File(baseOutputDirectory.getAbsolutePath()
 				+ "/html");
 		if (!baseDirectory.exists()) {
@@ -145,6 +158,49 @@ public class HtmlOutputPlugin implements OutputPlugin {
 
 	public void setCssPath(String cssPath) {
 		this.cssPath = cssPath;
+	}
+
+	@Override
+	public String getShortName() {
+		return SHORT_NAME;
+	}
+
+	@Override
+	public void configure(String configResource) {
+		if (configResource != null) {
+			try {
+				org.apache.commons.configuration.Configuration conf = new PropertiesConfiguration(
+						configResource);
+				log.debug("Reading configuration file: {}", configResource);
+				String prop = (String) conf.getProperty("outputEncoding");
+				if (prop != null) {
+					outputEncoding = prop;
+					log.debug("config: outputEncoding = {}", outputEncoding);
+				}
+				prop = (String) conf.getProperty("baseTemplatePath");
+				if (prop != null) {
+					baseTemplatePath = prop;
+					log.debug("config: baseTemplatePath = {}", baseTemplatePath);
+				}
+				prop = (String) conf.getProperty("packageTemplateName");
+				if (prop != null) {
+					packageTemplateName = prop;
+					log.debug("config: packageTemplateName = {}",
+							packageTemplateName);
+				}
+				prop = (String) conf.getProperty("cssFile");
+				if (prop != null) {
+					cssFile = prop;
+					log.debug("config: cssFile = {}", cssFile);
+				}
+				initialize();
+				log.debug("Configuration done");
+			} catch (ConfigurationException e) {
+				throw new IllegalArgumentException(
+						"Error reading config file: " + configResource, e);
+			}
+		}
+
 	}
 
 }

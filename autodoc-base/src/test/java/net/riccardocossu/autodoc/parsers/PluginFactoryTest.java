@@ -8,7 +8,13 @@ public class PluginFactoryTest {
 	public void testJPAShortName() {
 		// tests that the JPA plugin is configurable through its short name
 		PluginFactory factory = new PluginFactory();
-		factory.registerPlugin("JPA2");
+		factory.registerInputPlugin("JPA2");
 	}
 
+	@Test
+	public void testHTMLShortName() {
+		// tests that the JPA plugin is configurable through its short name
+		PluginFactory factory = new PluginFactory();
+		factory.registerInputPlugin("HTML");
+	}
 }

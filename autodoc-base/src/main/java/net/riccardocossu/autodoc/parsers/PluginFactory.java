@@ -42,6 +42,18 @@ public class PluginFactory {
 				inputPluginsByShortName.put(shortName, pl);
 			}
 		}
+		ServiceLoader<OutputPlugin> outPutLoader = ServiceLoader
+				.load(OutputPlugin.class);
+		Iterator<OutputPlugin> outputIt = outPutLoader.iterator();
+		while (outputIt.hasNext()) {
+			OutputPlugin pl = outputIt.next();
+			String shortName = pl.getShortName();
+			// if plugins doesn't want or need to be called by shortname, it
+			// should set this method to return null
+			if (shortName != null) {
+				outputPluginsByShortName.put(shortName, pl);
+			}
+		}
 	}
 
 	/**
@@ -63,7 +75,13 @@ public class PluginFactory {
 		}
 	}
 
-	public void registerPlugin(String identifier) {
+	/**
+	 * Register input plugin; can be referred by FQCN or short name
+	 * 
+	 * @param identifier
+	 *            identifier for the plugin
+	 */
+	public void registerInputPlugin(String identifier) {
 		AnnotationsPlugin pl = inputPluginsByShortName.get(identifier);
 		if (pl == null) {
 			try {
@@ -86,6 +104,35 @@ public class PluginFactory {
 	 */
 	public AnnotationsPlugin getPluginForAnnotation(Class annotation) {
 		return pluginsByAnnotation.get(annotation.getName());
+	}
+
+	/**
+	 * Gets the plugin for the given identifier
+	 * 
+	 * @param identifier
+	 *            is a FQCN or a short identifier
+	 * @param configResource
+	 *            is a resource path from where the plugin should be able to
+	 *            configure itself (can be <code>null</code>; in that case the
+	 *            plugin is left to its default configuration
+	 * @return the configured plugin instance if everything is ok
+	 */
+	public OutputPlugin initOutputPlugin(String identifier,
+			String configResource) {
+		OutputPlugin pl = outputPluginsByShortName.get(identifier);
+		if (pl == null) {
+			try {
+				Class<?> clazz = Class.forName(identifier);
+				pl = (OutputPlugin) clazz.newInstance();
+			} catch (Exception e) {
+				throw new IllegalArgumentException("Unable to locate plugin "
+						+ identifier, e);
+			}
+		}
+		if (pl != null && configResource != null) {
+			pl.configure(configResource);
+		}
+		return pl;
 	}
 
 	/**

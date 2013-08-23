@@ -47,7 +47,7 @@ public class Engine {
 		PluginFactory factory = new PluginFactory();
 		for (String p : plugins) {
 			try {
-				factory.registerPlugin(p);
+				factory.registerInputPlugin(p);
 			} catch (Exception e) {
 				log.error("Error including input plugin " + p, e);
 			}
@@ -70,8 +70,13 @@ public class Engine {
 		log.info("Using output plugins: {}", (Object) outputPlugins);
 		for (String p : outputPlugins) {
 			try {
-				Class<?> clazz = Class.forName(p);
-				OutputPlugin pl = (OutputPlugin) clazz.newInstance();
+				String[] splittedPackage = p.split(",");
+				// identifier is mandatory and it's always the first part
+				String identifier = splittedPackage[0];
+				String configResource = splittedPackage.length > 1 ? splittedPackage[1]
+						: null;
+				OutputPlugin pl = factory.initOutputPlugin(identifier,
+						configResource);
 				pl.process(parsedPackages, baseOutputDirectory);
 			} catch (Exception e) {
 				log.error("Error including output plugin " + p, e);
