@@ -499,7 +499,7 @@ public class JPAPlugin extends BaseAbstractPlugin implements AnnotationsPlugin {
 	}
 
 	@Override
-	public boolean isMethodUseful(Method method) {
+	public boolean isMethodUseful(Method method, Annotation[] annotations) {
 		return method.getName().startsWith("get");
 	}
 
@@ -519,7 +519,7 @@ public class JPAPlugin extends BaseAbstractPlugin implements AnnotationsPlugin {
 	}
 
 	@Override
-	public boolean isFieldUseful(Field field) {
+	public boolean isFieldUseful(Field field, Annotation[] annotations) {
 		// a field is always useful for jpa
 		return true;
 	}

@@ -43,7 +43,8 @@ public interface AnnotationsPlugin {
 	 * @return <code>true</code> if the method is relevant, <code>false</code>
 	 *         otherwise
 	 */
-	public abstract boolean isMethodUseful(Method method);
+	public abstract boolean isMethodUseful(Method method,
+			Annotation[] methodLevelAnnotations);
 
 	/**
 	 * Tells the engine if the given class is useful for this plugin
@@ -67,7 +68,8 @@ public interface AnnotationsPlugin {
 	 * @return <code>true</code> if the plugin is interested in parsing this
 	 *         field
 	 */
-	public abstract boolean isFieldUseful(Field field);
+	public abstract boolean isFieldUseful(Field field,
+			Annotation[] fieldLevelAnnotations);
 
 	/**
 	 * Gets a short name for the plugin, which can be used to refer the plugin

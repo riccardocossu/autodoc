@@ -48,32 +48,31 @@ public class ClassParser {
 			}
 			Field[] fields = clazz.getDeclaredFields();
 			for (Field f : fields) {
-				AnnotatedField af = new AnnotatedField();
-				ac.getFields().add(af);
-				af.setName(f.getName());
 				declaredAnnotations = f.getDeclaredAnnotations();
-				for (Annotation a : declaredAnnotations) {
-					pl = factory.getPluginForAnnotation(a.annotationType());
-					if (pl != null) {
-						af.getAnnotations().add(pl.parse(a));
+				if (factory.isFieldUseful(f, declaredAnnotations)) {
+					AnnotatedField af = new AnnotatedField();
+					af.setName(f.getName());
+					for (Annotation a : declaredAnnotations) {
+						pl = factory.getPluginForAnnotation(a.annotationType());
+						if (pl != null) {
+							af.getAnnotations().add(pl.parse(a));
+						}
 					}
-
+					ac.getFields().add(af);
 				}
 			}
 			Method[] methods = clazz.getDeclaredMethods();
 			for (Method m : methods) {
-				AnnotatedMethod am = new AnnotatedMethod();
-				boolean isInteresting = false;
-				am.setName(m.getName());
 				declaredAnnotations = m.getDeclaredAnnotations();
-				for (Annotation a : declaredAnnotations) {
-					pl = factory.getPluginForAnnotation(a.annotationType());
-					if (pl != null) {
-						am.getAnnotations().add(pl.parse(a));
-						isInteresting = isInteresting || pl.isMethodUseful(m);
+				if (factory.isMethodUseful(m, declaredAnnotations)) {
+					AnnotatedMethod am = new AnnotatedMethod();
+					am.setName(m.getName());
+					for (Annotation a : declaredAnnotations) {
+						pl = factory.getPluginForAnnotation(a.annotationType());
+						if (pl != null) {
+							am.getAnnotations().add(pl.parse(a));
+						}
 					}
-				}
-				if (isInteresting) {
 					ac.getMethods().add(am);
 				}
 			}

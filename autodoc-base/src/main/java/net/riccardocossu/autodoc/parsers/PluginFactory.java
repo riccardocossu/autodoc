@@ -4,6 +4,8 @@
 package net.riccardocossu.autodoc.parsers;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -151,6 +153,47 @@ public class PluginFactory {
 		for (Iterator<AnnotationsPlugin> it = registeredPlugins.iterator(); !isUseful
 				&& it.hasNext();) {
 			isUseful = it.next().isClassUseful(clazz, classLevelAnnotations);
+		}
+		return isUseful;
+	}
+
+	/**
+	 * Tells if a method is relevant for at least one plugin
+	 * 
+	 * @param meth
+	 *            the method to check
+	 * @param methodLevelAnnotations
+	 *            the array of annotation, to avoid repeating the call for every
+	 *            plugin
+	 * @return <code>true</code> if the method is interesting to at least one
+	 *         plugin, <code>false</code> otherwise
+	 */
+	public boolean isMethodUseful(Method meth,
+			Annotation[] methodLevelAnnotations) {
+		boolean isUseful = false;
+		for (Iterator<AnnotationsPlugin> it = registeredPlugins.iterator(); !isUseful
+				&& it.hasNext();) {
+			isUseful = it.next().isMethodUseful(meth, methodLevelAnnotations);
+		}
+		return isUseful;
+	}
+
+	/**
+	 * Tells if a field is relevant for at least one plugin
+	 * 
+	 * @param field
+	 *            the field to check
+	 * @param fieldLevelAnnotations
+	 *            the array of annotation, to avoid repeating the call for every
+	 *            plugin
+	 * @return <code>true</code> if the field is interesting to at least one
+	 *         plugin, <code>false</code> otherwise
+	 */
+	public boolean isFieldUseful(Field field, Annotation[] fieldLevelAnnotations) {
+		boolean isUseful = false;
+		for (Iterator<AnnotationsPlugin> it = registeredPlugins.iterator(); !isUseful
+				&& it.hasNext();) {
+			isUseful = it.next().isFieldUseful(field, fieldLevelAnnotations);
 		}
 		return isUseful;
 	}

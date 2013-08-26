@@ -21,4 +21,13 @@ public class PluginFactoryTest {
 		OutputPlugin op = factory.initOutputPlugin("HTML", null);
 		assertNotNull(op);
 	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testHTMLNoConfig() {
+		// tests that the JPA plugin is configurable through its short name
+		PluginFactory factory = new PluginFactory();
+		OutputPlugin op = factory.initOutputPlugin("HTML",
+				"nonExistingConfig.xml");
+		assertNotNull(op);
+	}
 }
