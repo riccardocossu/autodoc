@@ -54,10 +54,20 @@ public class HtmlOutputPlugin implements OutputPlugin {
 
 	public HtmlOutputPlugin() {
 		super();
+		try {
+			// freemarker doesn't activate slf4j by default
+			freemarker.log.Logger
+					.selectLoggerLibrary(freemarker.log.Logger.LIBRARY_SLF4J);
+		} catch (ClassNotFoundException e) {
+			// this should never happen, since this class depends on slf4j at
+			// compile time
+			log.error("Unknow error in setting log library for Freemarker", e);
+		}
 		cfg = new Configuration();
 		cfg.setObjectWrapper(new DefaultObjectWrapper());
 		cfg.setTemplateExceptionHandler(TemplateExceptionHandler.HTML_DEBUG_HANDLER);
 		cfg.setIncompatibleImprovements(new Version(2, 3, 20));
+
 	}
 
 	private void initialize() {
@@ -144,27 +154,6 @@ public class HtmlOutputPlugin implements OutputPlugin {
 
 	}
 
-	public String getCssFile() {
-		return cssFile;
-	}
-
-	public void setCssFile(String cssFile) {
-		this.cssFile = cssFile;
-	}
-
-	public String getCssPath() {
-		return cssPath;
-	}
-
-	public void setCssPath(String cssPath) {
-		this.cssPath = cssPath;
-	}
-
-	@Override
-	public String getShortName() {
-		return SHORT_NAME;
-	}
-
 	@Override
 	public void configure(String configResource) {
 		if (configResource != null) {
@@ -193,6 +182,11 @@ public class HtmlOutputPlugin implements OutputPlugin {
 					cssFile = prop;
 					log.debug("config: cssFile = {}", cssFile);
 				}
+				prop = (String) conf.getProperty("cssPath");
+				if (prop != null) {
+					cssPath = prop;
+					log.debug("config: cssPath = {}", cssPath);
+				}
 				initialize();
 				log.debug("Configuration done");
 			} catch (ConfigurationException e) {
@@ -201,6 +195,51 @@ public class HtmlOutputPlugin implements OutputPlugin {
 			}
 		}
 
+	}
+
+	public String getCssFile() {
+		return cssFile;
+	}
+
+	public void setCssFile(String cssFile) {
+		this.cssFile = cssFile;
+	}
+
+	public String getCssPath() {
+		return cssPath;
+	}
+
+	public void setCssPath(String cssPath) {
+		this.cssPath = cssPath;
+	}
+
+	@Override
+	public String getShortName() {
+		return SHORT_NAME;
+	}
+
+	public String getBaseTemplatePath() {
+		return baseTemplatePath;
+	}
+
+	public void setBaseTemplatePath(String baseTemplatePath) {
+		this.baseTemplatePath = baseTemplatePath;
+	}
+
+	public String getOutputEncoding() {
+		return outputEncoding;
+	}
+
+	public void setOutputEncoding(String outputEncoding) {
+		this.outputEncoding = outputEncoding;
+	}
+
+	public String getPackageTemplateName() {
+		return packageTemplateName;
+	}
+
+	public void setPackageTemplateName(String packageTemplateName) {
+		this.packageTemplateName = packageTemplateName;
 	}
 
 }
