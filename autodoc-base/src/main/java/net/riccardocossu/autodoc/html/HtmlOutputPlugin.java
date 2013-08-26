@@ -44,12 +44,15 @@ public class HtmlOutputPlugin implements OutputPlugin {
 			.getLogger(HtmlOutputPlugin.class);
 	private Configuration cfg;
 	private Template packageTemplate;
+	private Template indexTemplate;
 
 	private String cssFile = "default.css";
 	private String cssPath = "/html/style/";
 	private String baseTemplatePath = "/html/templates";
 	private String outputEncoding = "UTF-8";
 	private String packageTemplateName = "package-template.html";
+	private String indexTemplateName = "index-template.html";
+	private String indexFile = "index.html";
 	private boolean initialized = false;
 
 	public HtmlOutputPlugin() {
@@ -76,6 +79,7 @@ public class HtmlOutputPlugin implements OutputPlugin {
 				baseTemplatePath));
 		try {
 			packageTemplate = cfg.getTemplate(packageTemplateName);
+			indexTemplate = cfg.getTemplate(indexTemplateName);
 		} catch (IOException e) {
 			log.error("Error parsing base templates: " + packageTemplateName, e);
 		}
@@ -107,6 +111,31 @@ public class HtmlOutputPlugin implements OutputPlugin {
 		} catch (IOException e) {
 			log.error("Error copying css file " + cssPath + cssFile, e);
 		}
+		File index = new File(baseDirectory.getAbsolutePath() + "/" + indexFile);
+		FileWriter indexWriter = null;
+		try {
+			indexWriter = new FileWriter(index);
+			Map root = new HashMap();
+			List<PackageNameHolder> packageFiles = new ArrayList<PackageNameHolder>();
+			for (PackageContainer pc : packages) {
+				packageFiles.add(new PackageNameHolder(pc.getName(), pc
+						.getName().replaceAll("\\.", "_") + ".html"));
+			}
+			root.put("packages", packageFiles);
+			root.put("version", net.riccardocossu.autodoc.Version.VERSION);
+			root.put("cssFile", cssFile);
+			indexTemplate.process(root, indexWriter);
+		} catch (Exception e) {
+			log.error("Error generating index " + index.getAbsolutePath(), e);
+		} finally {
+			if (indexWriter != null) {
+				try {
+					indexWriter.close();
+				} catch (Exception e) {
+					log.error("Can't close file", e);
+				}
+			}
+		}
 		for (PackageContainer pc : packages) {
 			TreeSet<AnnotatedClass> buffer = new TreeSet<AnnotatedClass>(
 					new Comparator<AnnotatedClass>() {
@@ -129,8 +158,7 @@ public class HtmlOutputPlugin implements OutputPlugin {
 			for (Iterator<AnnotatedClass> it = buffer.iterator(); it.hasNext();) {
 				orderedClasses.add(it.next());
 			}
-			File report = new File(baseDirectory.getAbsolutePath() + "/"
-					+ pc.getName().replaceAll("\\.", "_") + ".html");
+			File report = new File(getPackageFileName(baseDirectory, pc));
 			FileWriter out = null;
 			try {
 				out = new FileWriter(report);
@@ -152,6 +180,11 @@ public class HtmlOutputPlugin implements OutputPlugin {
 			}
 		}
 
+	}
+
+	private String getPackageFileName(File baseDirectory, PackageContainer pc) {
+		return baseDirectory.getAbsolutePath() + "/"
+				+ pc.getName().replaceAll("\\.", "_") + ".html";
 	}
 
 	@Override
@@ -240,6 +273,34 @@ public class HtmlOutputPlugin implements OutputPlugin {
 
 	public void setPackageTemplateName(String packageTemplateName) {
 		this.packageTemplateName = packageTemplateName;
+	}
+
+	public static final class PackageNameHolder {
+		private String pkgName;
+		private String fileName;
+
+		public PackageNameHolder(String pkgName, String fileName) {
+			super();
+			this.pkgName = pkgName;
+			this.fileName = fileName;
+		}
+
+		public String getPkgName() {
+			return pkgName;
+		}
+
+		public void setPkgName(String pkgName) {
+			this.pkgName = pkgName;
+		}
+
+		public String getFileName() {
+			return fileName;
+		}
+
+		public void setFileName(String fileName) {
+			this.fileName = fileName;
+		}
+
 	}
 
 }
