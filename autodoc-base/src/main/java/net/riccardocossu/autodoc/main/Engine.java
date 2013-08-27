@@ -79,7 +79,7 @@ public class Engine {
 						configResource);
 				pl.process(parsedPackages, baseOutputDirectory);
 			} catch (Exception e) {
-				log.error("Error including output plugin " + p, e);
+				log.error("Error including or executing output plugin " + p, e);
 			}
 		}
 		return parsedPackages;

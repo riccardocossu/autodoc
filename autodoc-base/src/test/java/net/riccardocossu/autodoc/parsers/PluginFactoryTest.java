@@ -44,7 +44,7 @@ public class PluginFactoryTest {
 		assertNotNull(op);
 		assertTrue(op instanceof HtmlOutputPlugin);
 		HtmlOutputPlugin html = (HtmlOutputPlugin) op;
-		assertEquals("/", html.getBaseTemplatePath());
+		assertEquals("/html/templates", html.getBaseTemplatePath());
 		assertEquals("/customCssFile.css", html.getCssFile());
 		assertEquals("UTF-16", html.getOutputEncoding());
 		assertEquals("customPackageTemplate.html",

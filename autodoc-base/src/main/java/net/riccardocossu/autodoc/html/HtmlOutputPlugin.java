@@ -6,6 +6,7 @@ package net.riccardocossu.autodoc.html;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -21,9 +22,11 @@ import net.riccardocossu.autodoc.base.PackageContainer;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
-import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.common.io.Files;
+import com.google.common.io.InputSupplier;
 
 import freemarker.cache.ClassTemplateLoader;
 import freemarker.template.Configuration;
@@ -79,9 +82,15 @@ public class HtmlOutputPlugin implements OutputPlugin {
 				baseTemplatePath));
 		try {
 			packageTemplate = cfg.getTemplate(packageTemplateName);
+		} catch (IOException e) {
+			throw new RuntimeException("Error parsing base templates: "
+					+ packageTemplateName, e);
+		}
+		try {
 			indexTemplate = cfg.getTemplate(indexTemplateName);
 		} catch (IOException e) {
-			log.error("Error parsing base templates: " + packageTemplateName, e);
+			throw new RuntimeException("Error parsing base templates: "
+					+ indexTemplateName, e);
 		}
 		initialized = true;
 	}
@@ -105,9 +114,17 @@ public class HtmlOutputPlugin implements OutputPlugin {
 			baseDirectory.mkdirs();
 		}
 		File css = new File(baseDirectory.getAbsolutePath() + "/" + cssFile);
-		URL cssRes = this.getClass().getResource(cssPath + cssFile);
+		final URL cssRes = this.getClass().getResource(cssPath + cssFile);
 		try {
-			FileUtils.copyURLToFile(cssRes, css);
+			InputSupplier<InputStream> source = new InputSupplier<InputStream>() {
+
+				@Override
+				public InputStream getInput() throws IOException {
+					// TODO Auto-generated method stub
+					return cssRes.openStream();
+				}
+			};
+			Files.copy(source, css);
 		} catch (IOException e) {
 			log.error("Error copying css file " + cssPath + cssFile, e);
 		}
