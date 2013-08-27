@@ -8,9 +8,7 @@ public class VersionTest {
 
 	@Test
 	public void testVersion() {
-		String v = Version.VERSION;
-		System.out.println("Version: " + v);
-		assertNotEquals("N/A", v);
+		assertNotEquals("N/A", Version.VERSION);
 	}
 
 }

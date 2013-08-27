@@ -11,6 +11,7 @@ import java.util.List;
  */
 public class AnnotatedMethod {
 	private String name;
+	private String returnType;
 	private List<AnnotationModel> annotations;
 
 	public AnnotatedMethod() {
@@ -31,6 +32,14 @@ public class AnnotatedMethod {
 
 	public void setAnnotations(List<AnnotationModel> annotations) {
 		this.annotations = annotations;
+	}
+
+	public String getReturnType() {
+		return returnType;
+	}
+
+	public void setReturnType(String returnType) {
+		this.returnType = returnType;
 	}
 
 }

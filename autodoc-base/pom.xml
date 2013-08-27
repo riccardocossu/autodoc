@@ -7,6 +7,7 @@
 	<version>0.3.0-SNAPSHOT</version>
 	<name>Autodoc base</name>
 	<description>Base library for autodoc tools</description>
+	<url>https://bitbucket.org/riccardocossu/autodoc</url>
 
 	<parent>
 		<groupId>org.sonatype.oss</groupId>
@@ -34,24 +35,7 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>commons-beanutils</groupId>
-			<artifactId>commons-beanutils</artifactId>
-			<version>1.8.3</version>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.11</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>ch.qos.logback</groupId>
-			<artifactId>logback-classic</artifactId>
-			<version>1.0.13</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
+			<!-- required by commons configuration as a replacement of commons logging -->
 			<groupId>org.slf4j</groupId>
 			<artifactId>jcl-over-slf4j</artifactId>
 			<version>1.7.5</version>
@@ -74,6 +58,12 @@
 			<artifactId>commons-configuration</artifactId>
 			<version>1.9</version>
 			<scope>compile</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>commons-logging</groupId>
+					<artifactId>commons-logging</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.freemarker</groupId>
@@ -82,19 +72,40 @@
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-			<version>1.2.17</version>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
 			<version>14.0.1</version>
 		</dependency>
 
-	</dependencies>
+		<!-- test scope dependency -->
 
+		<dependency>
+			<!-- required by commons-configuration:DefaultConfiguration, but only 
+				in tests! -->
+			<groupId>commons-beanutils</groupId>
+			<artifactId>commons-beanutils</artifactId>
+			<version>1.8.3</version>
+			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>commons-logging</groupId>
+					<artifactId>commons-logging</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.11</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>1.0.13</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
 
 	<build>
 		<resources>

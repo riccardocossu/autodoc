@@ -6,6 +6,7 @@ package net.riccardocossu.autodoc.jpa;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -470,34 +471,6 @@ public class JPAPlugin extends BaseAbstractPlugin implements AnnotationsPlugin {
 		return getAnnotationValues(target, new String[0]);
 	}
 
-	protected String toString(JoinColumn target) {
-		return super.toString(target);
-	}
-
-	protected String toString(JoinColumn[] target) {
-		return super.toString(target);
-	}
-
-	protected String toString(JoinTable target) {
-		return super.toString(target);
-	}
-
-	protected String toString(Column target) {
-		return super.toString(target);
-	}
-
-	protected String toString(Column[] target) {
-		return super.toString(target);
-	}
-
-	protected String toString(QueryHint target) {
-		return super.toString(target);
-	}
-
-	protected String toString(QueryHint[] target) {
-		return super.toString(target);
-	}
-
 	@Override
 	public boolean isMethodUseful(Method method, Annotation[] annotations) {
 		return method.getName().startsWith("get");
@@ -520,8 +493,10 @@ public class JPAPlugin extends BaseAbstractPlugin implements AnnotationsPlugin {
 
 	@Override
 	public boolean isFieldUseful(Field field, Annotation[] annotations) {
-		// a field is always useful for jpa
-		return true;
+		// a field is always useful for jpa, unless it's serialVersion!
+		boolean isSerialVersion = field.getName().equals("serialVersionUID");
+		boolean isStatic = Modifier.isStatic(field.getModifiers());
+		return !(isSerialVersion || isStatic);
 	}
 
 	@Override

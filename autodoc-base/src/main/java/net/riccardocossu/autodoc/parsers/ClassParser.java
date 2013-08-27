@@ -52,6 +52,7 @@ public class ClassParser {
 				if (factory.isFieldUseful(f, declaredAnnotations)) {
 					AnnotatedField af = new AnnotatedField();
 					af.setName(f.getName());
+					af.setType(f.getType().getName());
 					for (Annotation a : declaredAnnotations) {
 						pl = factory.getPluginForAnnotation(a.annotationType());
 						if (pl != null) {
@@ -67,6 +68,7 @@ public class ClassParser {
 				if (factory.isMethodUseful(m, declaredAnnotations)) {
 					AnnotatedMethod am = new AnnotatedMethod();
 					am.setName(m.getName());
+					am.setReturnType(m.getReturnType().getName());
 					for (Annotation a : declaredAnnotations) {
 						pl = factory.getPluginForAnnotation(a.annotationType());
 						if (pl != null) {

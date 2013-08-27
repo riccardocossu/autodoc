@@ -46,6 +46,10 @@ li.attribute {
 	background-color: #F2F7F5;
 }
 
+li.index {
+	background-color: #CCCCFF;
+}
+
 .annotation {
 	color: #3D1F16;
 }

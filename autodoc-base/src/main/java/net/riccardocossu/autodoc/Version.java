@@ -16,6 +16,7 @@ import java.util.Properties;
  */
 public class Version {
 	public static String VERSION;
+	public static String URL;
 
 	static {
 		Properties p = new Properties();
@@ -25,9 +26,7 @@ public class Version {
 		try {
 			st = url.openStream();
 			p.load(st);
-			VERSION = p.getProperty("autodoc.version");
 		} catch (Exception e) {
-			VERSION = "N/A";
 		} finally {
 			if (st != null) {
 				try {
@@ -37,6 +36,9 @@ public class Version {
 				}
 			}
 		}
+		VERSION = p.getProperty("autodoc.version", "N/A");
+		URL = p.getProperty("autodoc.url",
+				"https://bitbucket.org/riccardocossu/autodoc");
 
 	}
 

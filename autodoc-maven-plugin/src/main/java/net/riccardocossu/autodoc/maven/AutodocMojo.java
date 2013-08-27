@@ -34,7 +34,8 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
 
 /**
- * Goal which touches a timestamp file.
+ * Goal which executes autodoc main engine, configuring it based on its
+ * configuration.
  * 
  * @goal parse
  * 

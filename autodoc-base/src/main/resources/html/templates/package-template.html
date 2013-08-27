@@ -46,7 +46,7 @@
 			<div class="colRight">
 				<h2>Classes:</h2>
 				<ul class="classes">
-				[#list pkg.classes as c]
+				[#list orderedClasses as c]
 					<li>
 		  		 		<h3 id="class_${c.qualifiedName}">${c.qualifiedName}</h3>
 		  		 		[#if c.annotations?has_content]
@@ -64,7 +64,7 @@
 					 		<ul class="fields">
 			   		 			[#list c.fields as f]
 			   		 			<li>
-			   		 				<span class="fieldName">${f.name}</span>
+			   		 				${f.type} <span class="fieldName">${f.name}</span>
 			   		 				<ul class="annotations">
 			   		 					[#list f.annotations as a]
 			   		 					<li>
@@ -81,7 +81,7 @@
 			  		 		<ul class="fields">
 			   		 			[#list c.methods as m]
 			   		 			<li>
-			   		 				<span class="fieldName">${m.name}</span>
+			   		 				${m.returnType} <span class="fieldName">${m.name}</span>
 			   		 				<ul class="annotations">
 			   		 					[#list m.annotations as a]
 			   		 					<li class="annotation">

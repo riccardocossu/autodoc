@@ -4,10 +4,11 @@
 		<title>Autodoc report - version ${version}</title>
 	</head>
 	<body>
+		<h1><a href="${url}">Autodoc</a> report - version ${version}</h1>
 		<h2>List of packages:</h2>
 		<ul>
 			<#list packages as pack>
-			<li>
+			<li class="index">
 				<a href="${pack.fileName}">${pack.pkgName}</a>
 			</li>
 			</#list>

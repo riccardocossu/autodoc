@@ -140,6 +140,7 @@ public class HtmlOutputPlugin implements OutputPlugin {
 			}
 			root.put("packages", packageFiles);
 			root.put("version", net.riccardocossu.autodoc.Version.VERSION);
+			root.put("url", net.riccardocossu.autodoc.Version.URL);
 			root.put("cssFile", cssFile);
 			indexTemplate.process(root, indexWriter);
 		} catch (Exception e) {
