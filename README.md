@@ -78,7 +78,7 @@ Starting from version 0.3.0 you can use a short name for plugins (**JPA2** for j
 			</outputPlugins>
 
 ```
-For details on how to configure Html plugin see [here](https://bitbucket.org/riccardocossu/autodoc/wiki/Html%20Plugin).
+For details on how to configure Html plugin see [here](https://github.com/riccardocossu/autodoc/wiki/HtmlPlugin).
 A quick list of the new features in version 0.3.0 is on [my blog](http://codealone.blogspot.com/2013/08/new-version-for-autodoc-big-news.html).
 
 ## Other tools ##
