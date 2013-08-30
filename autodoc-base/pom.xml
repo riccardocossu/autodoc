@@ -5,7 +5,7 @@
 	<artifactId>autodoc-base</artifactId>
 	<version>0.3.1-SNAPSHOT</version>
 	<name>Autodoc base</name>
-	<description>Base library for autodoc tools</description>
+	<description>Base library for autodoc tools.</description>
 	<url>https://github.com/riccardocossu/autodoc</url>
 
 	<parent>
