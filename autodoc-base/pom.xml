@@ -3,10 +3,10 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>net.riccardocossu.autodoc</groupId>
 	<artifactId>autodoc-base</artifactId>
-	<version>0.3.0</version>
+	<version>0.3.1-SNAPSHOT</version>
 	<name>Autodoc base</name>
 	<description>Base library for autodoc tools</description>
-	<url>https://bitbucket.org/riccardocossu/autodoc</url>
+	<url>https://github.com/riccardocossu/autodoc</url>
 
 	<parent>
 		<groupId>org.sonatype.oss</groupId>
@@ -23,8 +23,8 @@
 	</licenses>
 
 	<scm>
-		<url>scm:git:git@bitbucket.org:riccardocossu/autodoc.git</url>
-		<developerConnection>scm:git:git@bitbucket.org:riccardocossu/autodoc.git</developerConnection>
+		<url>scm:git: git@github.com:riccardocossu/autodoc.git</url>
+		<developerConnection>scm:git: git@github.com:riccardocossu/autodoc.git</developerConnection>
 		<tag>HEAD</tag>
 	</scm>
 
