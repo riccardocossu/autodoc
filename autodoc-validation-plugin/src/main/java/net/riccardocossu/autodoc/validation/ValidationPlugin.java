@@ -61,7 +61,6 @@ public class ValidationPlugin extends BaseAbstractPlugin {
 	 * net.riccardocossu.autodoc.base.AnnotationsPlugin#getManagedAnnotations()
 	 */
 	public Collection<? extends Class> getManagedAnnotations() {
-		// TODO Auto-generated method stub
 		return MANAGED;
 	}
 
@@ -145,7 +144,6 @@ public class ValidationPlugin extends BaseAbstractPlugin {
 	 * @see net.riccardocossu.autodoc.base.AnnotationsPlugin#getShortName()
 	 */
 	public String getShortName() {
-		// TODO Auto-generated method stub
 		return "VALIDATION";
 	}
 
