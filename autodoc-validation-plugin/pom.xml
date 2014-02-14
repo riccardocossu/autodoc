@@ -38,9 +38,10 @@
 	</dependencies>
 
 	<scm>
-		<connection>scm:svn:http://svn.sonatype.org/spice/tags/autodoc-validation-plugin-0.1.0</connection>
-		<developerConnection>scm:svn:https://svn.sonatype.org/spice/tags/autodoc-validation-plugin-0.1.0</developerConnection>
-		<url>http://svn.sonatype.org/spice/tags/autodoc-validation-plugin-0.1.0</url>
+		<url>scm:git:git@github.com:riccardocossu/autodoc.git</url>
+		<developerConnection>scm:git:git@github.com:riccardocossu/autodoc.git</developerConnection>
+		<connection>scm:git:git@github.com:riccardocossu/autodoc.git</connection>
+		<tag>HEAD</tag>
 	</scm>
 
 	<build>
@@ -65,6 +66,31 @@
 				<configuration>
 					<tag>${project.artifactId}-${project.version}</tag>
 				</configuration>
+			</plugin>
+			<plugin>
+				<!-- esegue il deploy dei sorgenti associati al jar -->
+				<artifactId>maven-source-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<phase>package</phase>
+						<goals>
+							<goal>jar-no-fork</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
