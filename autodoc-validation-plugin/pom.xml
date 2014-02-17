@@ -20,7 +20,7 @@
 
 	<groupId>net.riccardocossu.autodoc</groupId>
 	<artifactId>autodoc-validation-plugin</artifactId>
-	<version>0.1.6-SNAPSHOT</version>
+	<version>0.1.8</version>
 	<name>Autodoc javax.validation plugin</name>
 	<description>Plugin for parsing javax.validation annotations</description>
 	<dependencies>
@@ -53,22 +53,6 @@
 					<source>1.6</source>
 					<target>1.6</target>
 				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-release-plugin</artifactId>
-				<version>2.4.2</version>
-				<executions>
-					<execution>
-						<id>default</id>
-						<goals>
-							<goal>perform</goal>
-						</goals>
-						<configuration>
-							<pomFileName>autodoc-base/pom.xml</pomFileName>
-						</configuration>
-					</execution>
-				</executions>
 			</plugin>
 		</plugins>
 	</build>
