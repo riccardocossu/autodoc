@@ -20,7 +20,7 @@
 
 	<groupId>net.riccardocossu.autodoc</groupId>
 	<artifactId>autodoc-validation-plugin</artifactId>
-	<version>0.1.8</version>
+	<version>0.1.9</version>
 	<name>Autodoc javax.validation plugin</name>
 	<description>Plugin for parsing javax.validation annotations</description>
 	<dependencies>
