@@ -81,6 +81,28 @@
 					</execution>
 				</executions>
 			</plugin>
+			<plugin>
+				<!-- esegue il deploy dei javadoc associati al jar -->
+				<artifactId>maven-gpg-plugin</artifactId>
+				<version>1.4</version>
+				<configuration>
+					<file>target/${project.artifactId}-${project.version}.jar</file>
+					<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+					<repositoryId>sonatype-nexus-staging</repositoryId>
+					<javadoc>target/${project.artifactId}-${project.version}-javadoc.jar</javadoc>
+					<sources>target/${project.artifactId}-${project.version}-sources.jar</sources>
+					<pomFile>pom.xml</pomFile>
+				</configuration>
+				<executions>
+					<execution>
+						<id>upload-files</id>
+						<phase>deploy</phase>
+						<goals>
+							<goal>sign-and-deploy-file</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 </project>
