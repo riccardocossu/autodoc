@@ -32,6 +32,7 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import net.riccardocossu.autodoc.base.AnnotationModel;
+import net.riccardocossu.autodoc.base.AnnotationsPlugin;
 import net.riccardocossu.autodoc.base.BaseAbstractPlugin;
 
 /**
@@ -39,7 +40,8 @@ import net.riccardocossu.autodoc.base.BaseAbstractPlugin;
  * 
  */
 @SuppressWarnings("rawtypes")
-public class ValidationPlugin extends BaseAbstractPlugin {
+public class ValidationPlugin extends BaseAbstractPlugin implements
+		AnnotationsPlugin {
 
 	@SuppressWarnings("unchecked")
 	private static final List<? extends Class> MANAGED = Arrays.asList(
