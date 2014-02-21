@@ -5,6 +5,7 @@ package net.riccardocossu.autodoc.base;
 
 import java.io.File;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author riccardo
@@ -40,5 +41,15 @@ public interface OutputPlugin {
 	 *            Resource path where to look for the configuration
 	 */
 	public abstract void configure(String configResource);
+
+	/**
+	 * Tells the output plugin which input plugin have been activated; this info
+	 * could be used by the output plugin to provide a different rendering based
+	 * on the plugin that parsed the annotation
+	 * 
+	 * @param activeInputPlugins
+	 *            a set of labels to help identify different plugins output
+	 */
+	public abstract void setActiveInputPlugins(Set<String> activeInputPlugins);
 
 }

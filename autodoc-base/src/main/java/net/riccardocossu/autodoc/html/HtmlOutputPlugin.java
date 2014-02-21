@@ -11,7 +11,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -19,7 +18,6 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import net.riccardocossu.autodoc.base.AnnotatedClass;
-import net.riccardocossu.autodoc.base.AnnotationModel;
 import net.riccardocossu.autodoc.base.OutputPlugin;
 import net.riccardocossu.autodoc.base.PackageContainer;
 
@@ -62,6 +60,7 @@ public class HtmlOutputPlugin implements OutputPlugin {
 	private String indexTemplateName = "index-template.html";
 	private String indexFile = "index.html";
 	private boolean initialized = false;
+	private Set<String> activeInputPlugins;
 
 	public HtmlOutputPlugin() {
 		super();
@@ -193,17 +192,9 @@ public class HtmlOutputPlugin implements OutputPlugin {
 						}
 					});
 			buffer.addAll(pc.getClasses());
-			Set<String> activePlugins = new HashSet<String>();
 			List<AnnotatedClass> orderedClasses = new ArrayList<AnnotatedClass>();
 			for (Iterator<AnnotatedClass> it = buffer.iterator(); it.hasNext();) {
-				AnnotatedClass ac = it.next();
-				orderedClasses.add(ac);
-				List<AnnotationModel> annotations = ac.getAnnotations();
-				if (annotations != null) {
-					for (AnnotationModel am : annotations) {
-						activePlugins.add(am.getQualifier());
-					}
-				}
+				orderedClasses.add(it.next());
 			}
 			File report = new File(getPackageFileName(baseDirectory, pc));
 			FileWriter out = null;
@@ -214,7 +205,7 @@ public class HtmlOutputPlugin implements OutputPlugin {
 				root.put("orderedClasses", orderedClasses);
 				root.put("cssFile", cssFile);
 				root.put("jQueryFile", JQUERY_FILE);
-				root.put("activePlugins", activePlugins);
+				root.put("activePlugins", activeInputPlugins);
 				packageTemplate.process(root, out);
 			} catch (Exception e) {
 				log.error("Error parsing package " + pc.getName(), e);
@@ -349,6 +340,12 @@ public class HtmlOutputPlugin implements OutputPlugin {
 		public void setFileName(String fileName) {
 			this.fileName = fileName;
 		}
+
+	}
+
+	@Override
+	public void setActiveInputPlugins(Set<String> activeInputPlugins) {
+		this.activeInputPlugins = activeInputPlugins;
 
 	}
 

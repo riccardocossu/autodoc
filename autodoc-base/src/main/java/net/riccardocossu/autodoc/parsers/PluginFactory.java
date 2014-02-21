@@ -197,4 +197,9 @@ public class PluginFactory {
 		}
 		return isUseful;
 	}
+
+	public Set<AnnotationsPlugin> getRegisteredPlugins() {
+		return registeredPlugins;
+	}
+
 }

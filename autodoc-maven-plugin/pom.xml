@@ -3,7 +3,7 @@
 	<groupId>net.riccardocossu.autodoc</groupId>
 	<artifactId>autodoc-maven-plugin</artifactId>
 	<packaging>maven-plugin</packaging>
-	<version>0.3.1-SNAPSHOT</version>
+	<version>1.0.0-SNAPSHOT</version>
 	<name>Autodoc maven plugin</name>
 	<url>https://github.com/riccardocossu/autodoc</url>
 
@@ -47,7 +47,7 @@
 		<dependency>
 			<groupId>net.riccardocossu.autodoc</groupId>
 			<artifactId>autodoc-base</artifactId>
-			<version>0.3.0</version>
+			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
@@ -94,18 +94,50 @@
 				</configuration>
 			</plugin>
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-release-plugin</artifactId>
-				<version>2.2.1</version>
+				<!-- esegue il deploy dei sorgenti associati al jar -->
+				<artifactId>maven-source-plugin</artifactId>
 				<executions>
 					<execution>
-						<id>default</id>
+						<id>attach-sources</id>
+						<phase>package</phase>
 						<goals>
-							<goal>perform</goal>
+							<goal>jar</goal>
 						</goals>
-						<configuration>
-							<pomFileName>autodoc-maven-plugin/pom.xml</pomFileName>
-						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<!-- esegue il deploy dei javadoc associati al jar -->
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-javadoc</id>
+						<phase>package</phase>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<!-- esegue il deploy dei javadoc associati al jar -->
+				<artifactId>maven-gpg-plugin</artifactId>
+				<version>1.4</version>
+				<configuration>
+					<file>target/${project.artifactId}-${project.version}.jar</file>
+					<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+					<repositoryId>sonatype-nexus-staging</repositoryId>
+					<javadoc>target/${project.artifactId}-${project.version}-javadoc.jar</javadoc>
+					<sources>target/${project.artifactId}-${project.version}-sources.jar</sources>
+					<pomFile>pom.xml</pomFile>
+				</configuration>
+				<executions>
+					<execution>
+						<id>upload-files</id>
+						<phase>deploy</phase>
+						<goals>
+							<goal>sign-and-deploy-file</goal>
+						</goals>
 					</execution>
 				</executions>
 			</plugin>

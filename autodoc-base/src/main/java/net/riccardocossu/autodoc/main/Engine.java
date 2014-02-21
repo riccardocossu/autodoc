@@ -5,8 +5,11 @@ package net.riccardocossu.autodoc.main;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import net.riccardocossu.autodoc.base.AnnotationsPlugin;
 import net.riccardocossu.autodoc.base.OutputPlugin;
 import net.riccardocossu.autodoc.base.PackageContainer;
 import net.riccardocossu.autodoc.parsers.PackageParser;
@@ -52,6 +55,10 @@ public class Engine {
 				log.error("Error including input plugin " + p, e);
 			}
 		}
+		Set<String> activeInputPlugins = new HashSet<String>();
+		for (AnnotationsPlugin p : factory.getRegisteredPlugins()) {
+			activeInputPlugins.add(p.getShortName());
+		}
 		String[] packages = configuration.getStringArray(CONFIG_PACKAGES);
 		log.info("Scanning packages: {}", (Object) packages);
 		PackageParser parser = new PackageParser();
@@ -77,6 +84,7 @@ public class Engine {
 						: null;
 				OutputPlugin pl = factory.initOutputPlugin(identifier,
 						configResource);
+				pl.setActiveInputPlugins(activeInputPlugins);
 				pl.process(parsedPackages, baseOutputDirectory);
 			} catch (Exception e) {
 				log.error("Error including or executing output plugin " + p, e);
