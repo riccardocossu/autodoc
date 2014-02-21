@@ -14,6 +14,7 @@ import java.util.List;
  * 
  */
 public class AnnotationModel {
+	private String qualifier;
 	private String qualifiedName;
 	private List<AttributeModel> attributes = new ArrayList<AttributeModel>();
 
@@ -41,6 +42,14 @@ public class AnnotationModel {
 
 	public void setAttributes(List<AttributeModel> attributes) {
 		this.attributes = attributes;
+	}
+
+	public String getQualifier() {
+		return qualifier;
+	}
+
+	public void setQualifier(String qualifier) {
+		this.qualifier = qualifier;
 	}
 
 }

@@ -29,11 +29,38 @@
 	<head>
 		<link href="${cssFile}" rel="stylesheet" type="text/css"/>
 		<title>Package ${pkg.name}</title>
+		<script src="${jQueryFile}"></script>
+		<style>
+			[#list activePlugins as ap]
+				.annotation_${ap} {display: block;}
+			[/#list]
+		</style>
+		<script type="text/javascript">
+			
+			function switchDisplay(target) {
+				var selector = ".annotation_"+target;
+				var display = $(selector).css("display");
+				if(display == "block") {
+					display = "none";
+				} else {
+					display = "block";
+				}
+				$(selector).css("display",display);
+			}
+		</script>
 	</head>
 	<body>
 		<div class="outer">
 			<h1>Package ${pkg.name}</h1>
 			<div class="colLeft">
+				<h2>Available plugins:</h2>
+				<ul>
+					[#list activePlugins as ap]
+					<li>
+						<label><input type="checkbox" checked="checked" onclick="switchDisplay('${ap}');return true;"/>${ap}</label>
+					</li>
+					[/#list]
+				</ul>
 				<h2>Quick jump:</h2>
 				<ul>
 					[#list orderedClasses as c]
@@ -53,7 +80,7 @@
 			  		 		<h4>Annotations</h4>
 			  		 		<ul class="annotations">
 			   		 			[#list c.annotations as a]
-			   		 			<li>
+			   		 			<li class="annotation_${a.qualifier}">
 			   		 				[@annModel model=a /]
 			   		 			</li>
 			   		 			[/#list]
@@ -67,7 +94,7 @@
 			   		 				${f.type} <span class="fieldName">${f.name}</span>
 			   		 				<ul class="annotations">
 			   		 					[#list f.annotations as a]
-			   		 					<li>
+			   		 					<li class="annotation_${a.qualifier}">
 			   		 						[@annModel model=a /]
 			   		 					</li>
 			   		 					[/#list]
@@ -84,7 +111,7 @@
 			   		 				${m.returnType} <span class="fieldName">${m.name}</span>
 			   		 				<ul class="annotations">
 			   		 					[#list m.annotations as a]
-			   		 					<li class="annotation">
+			   		 					<li class="annotation annotation_${a.qualifier}">
 			   		 						[@annModel model=a /]
 			   		 					</li>
 			   		 					[/#list]

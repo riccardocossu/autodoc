@@ -25,6 +25,7 @@ public abstract class BaseAbstractPlugin implements AnnotationsPlugin {
 	protected AnnotationModel getAnnotationValues(Annotation target,
 			String... attributeNames) {
 		AnnotationModel res = new AnnotationModel();
+		res.setQualifier(getShortName());
 		Class<? extends Annotation> clazz = target.annotationType();
 		res.setQualifiedName(clazz.getName());
 		List<AttributeModel> attributes = res.getAttributes();
@@ -32,8 +33,8 @@ public abstract class BaseAbstractPlugin implements AnnotationsPlugin {
 			try {
 				Method m = clazz.getDeclaredMethod(name, (Class[]) null);
 				Object annValue = m.invoke(target, (Object[]) null);
-				if(annValue == null) {
-					AttributeModel atMd = new AttributeModel(name,"null");
+				if (annValue == null) {
+					AttributeModel atMd = new AttributeModel(name, "null");
 					attributes.add(atMd);
 				} else if (annValue instanceof Annotation) {
 					AttributeModel atMd = new AttributeModel(name,
@@ -55,7 +56,8 @@ public abstract class BaseAbstractPlugin implements AnnotationsPlugin {
 						children.add(parse(a));
 					}
 				} else if (annValue.getClass().isArray()) {
-					attributes.add(new AttributeModel(name, toArrayString(annValue)));
+					attributes.add(new AttributeModel(name,
+							toArrayString(annValue)));
 				} else {
 					attributes.add(new AttributeModel(name, annValue));
 				}

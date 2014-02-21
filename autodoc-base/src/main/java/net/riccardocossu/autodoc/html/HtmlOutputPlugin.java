@@ -11,12 +11,15 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeSet;
 
 import net.riccardocossu.autodoc.base.AnnotatedClass;
+import net.riccardocossu.autodoc.base.AnnotationModel;
 import net.riccardocossu.autodoc.base.OutputPlugin;
 import net.riccardocossu.autodoc.base.PackageContainer;
 
@@ -51,6 +54,8 @@ public class HtmlOutputPlugin implements OutputPlugin {
 
 	private String cssFile = "default.css";
 	private String cssPath = "/html/style/";
+	private static final String JQUERY_PATH = "/html/js/";
+	private static final String JQUERY_FILE = "jquery-min.js";
 	private String baseTemplatePath = "/html/templates";
 	private String outputEncoding = "UTF-8";
 	private String packageTemplateName = "package-template.html";
@@ -120,13 +125,29 @@ public class HtmlOutputPlugin implements OutputPlugin {
 
 				@Override
 				public InputStream getInput() throws IOException {
-					// TODO Auto-generated method stub
 					return cssRes.openStream();
 				}
 			};
 			Files.copy(source, css);
 		} catch (IOException e) {
 			log.error("Error copying css file " + cssPath + cssFile, e);
+		}
+		File jQuery = new File(baseDirectory.getAbsolutePath() + "/"
+				+ JQUERY_FILE);
+		final URL cssJQuery = this.getClass().getResource(
+				JQUERY_PATH + JQUERY_FILE);
+		try {
+			InputSupplier<InputStream> source = new InputSupplier<InputStream>() {
+
+				@Override
+				public InputStream getInput() throws IOException {
+					return cssJQuery.openStream();
+				}
+			};
+			Files.copy(source, jQuery);
+		} catch (IOException e) {
+			log.error("Error copying jquery file " + JQUERY_PATH + JQUERY_FILE,
+					e);
 		}
 		File index = new File(baseDirectory.getAbsolutePath() + "/" + indexFile);
 		FileWriter indexWriter = null;
@@ -172,9 +193,17 @@ public class HtmlOutputPlugin implements OutputPlugin {
 						}
 					});
 			buffer.addAll(pc.getClasses());
+			Set<String> activePlugins = new HashSet<String>();
 			List<AnnotatedClass> orderedClasses = new ArrayList<AnnotatedClass>();
 			for (Iterator<AnnotatedClass> it = buffer.iterator(); it.hasNext();) {
-				orderedClasses.add(it.next());
+				AnnotatedClass ac = it.next();
+				orderedClasses.add(ac);
+				List<AnnotationModel> annotations = ac.getAnnotations();
+				if (annotations != null) {
+					for (AnnotationModel am : annotations) {
+						activePlugins.add(am.getQualifier());
+					}
+				}
 			}
 			File report = new File(getPackageFileName(baseDirectory, pc));
 			FileWriter out = null;
@@ -184,6 +213,8 @@ public class HtmlOutputPlugin implements OutputPlugin {
 				root.put("pkg", pc);
 				root.put("orderedClasses", orderedClasses);
 				root.put("cssFile", cssFile);
+				root.put("jQueryFile", JQUERY_FILE);
+				root.put("activePlugins", activePlugins);
 				packageTemplate.process(root, out);
 			} catch (Exception e) {
 				log.error("Error parsing package " + pc.getName(), e);
