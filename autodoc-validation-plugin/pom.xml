@@ -21,14 +21,14 @@
 
 	<groupId>net.riccardocossu.autodoc</groupId>
 	<artifactId>autodoc-validation-plugin</artifactId>
-	<version>0.1.11</version>
+	<version>0.2.0</version>
 	<name>Autodoc javax.validation plugin</name>
 	<description>Plugin for parsing javax.validation annotations</description>
 	<dependencies>
 		<dependency>
 			<groupId>net.riccardocossu.autodoc</groupId>
 			<artifactId>autodoc-base</artifactId>
-			<version>0.3.0</version>
+			<version>[0.3.0,1.1)</version>
 		</dependency>
 		<dependency>
 			<groupId>javax.validation</groupId>
