@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>net.riccardocossu.autodoc</groupId>
 	<artifactId>autodoc-base</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<name>Autodoc base</name>
 	<description>Base library for autodoc tools.</description>
 	<url>https://github.com/riccardocossu/autodoc</url>
