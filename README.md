@@ -32,7 +32,7 @@ At present, the easyest way to start using autotools is including the **autodoc-
 	<plugin>
 		<groupId>net.riccardocossu.autodoc</groupId>
 		<artifactId>autodoc-maven-plugin</artifactId>
-		<version>0.3.0</version>
+		<version>1.0.0</version>
 		<configuration>
 			<outputDirectory>${project.build.directory}</outputDirectory>
 			<packages>
@@ -65,7 +65,7 @@ With this configuration JPA2 annotations in the package will produce a report in
 
 Starting from version 0.3.0 you can use a short name for plugins (**JPA2** for jpa plugin and **HTML** for html plugin) and use a configuration file with output plugins, by adding a config file name after the plugin identifier, separing with a ",".
 
-
+You can also easily write [your own plugin](Writing a plugin "Writing a plugin").
 ```
 #!xml
 <inputPlugins>
@@ -78,7 +78,7 @@ Starting from version 0.3.0 you can use a short name for plugins (**JPA2** for j
 			</outputPlugins>
 
 ```
-For details on how to configure Html plugin see [here](https://github.com/riccardocossu/autodoc/wiki/HtmlPlugin).
+For details on how to configure Html plugin see [here](https://bitbucket.org/riccardocossu/autodoc/wiki/Html%20Plugin).
 A quick list of the new features in version 0.3.0 is on [my blog](http://codealone.blogspot.com/2013/08/new-version-for-autodoc-big-news.html).
 
 ## Other tools ##
