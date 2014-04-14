@@ -65,7 +65,7 @@ With this configuration JPA2 annotations in the package will produce a report in
 
 Starting from version 0.3.0 you can use a short name for plugins (**JPA2** for jpa plugin and **HTML** for html plugin) and use a configuration file with output plugins, by adding a config file name after the plugin identifier, separing with a ",".
 
-You can also easily write [your own plugin](https://github.com/riccardocossu/autodoc/wiki/Writing-a-plugin "Writing a plugin").
+You can also easily write **[your own plugin](https://github.com/riccardocossu/autodoc/wiki/Writing-a-plugin "Writing a plugin")**.
 ```
 #!xml
 <inputPlugins>
